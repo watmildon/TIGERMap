@@ -1,0 +1,73 @@
+@font-face {
+  font-family: cantarell_bold;
+  src: url(Cantarell-Bold.woff2)
+}
+
+@font-face {
+  font-family: cantarell_regular;
+  src: url(Cantarell-Regular.woff2)
+}
+
+@font-face {
+  font-family: roca_two_bold;
+  src: url(roca-two-bold.woff2)
+}
+@font-face {
+  font-family: roca_two_regular;
+  src: url(roca-two-regular.woff2)
+}
+
+
+h1, html, input, button, textarea {
+	font-family: roca_two_regular;
+}
+
+html, input, button, textarea {
+	//font-size: clamp(1.5vmin, 16pt, 2vmin);
+	font-size: 10pt;
+}
+select {
+	max-width: 80%;
+}
+
+body {
+	margin: 0;
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+}
+header, footer {
+	flex-grow: 0;
+	flex-shrink: 0;
+}
+
+header {
+	padding-left: 1ch;
+	padding-right: 1ch;
+}
+header > p {
+	max-width: 100ch;
+}
+
+main {
+	flex-grow: 1;
+}
+#map {
+	height:100%; width:100%;
+}
+
+h1 {
+	font-family: roca_two_bold;
+	font-size: max(5vmin, 2em);
+}
+
+footer {
+	max-height: 5vh;
+}
+
+.inline_centre {
+	display: inline-flex;
+	flex-direction: row;
+	align-items: center;
+	gap: 0.2ch;
+}
