@@ -1,0 +1,5 @@
+*.geojson
+*.osm.pbf
+*.pmtiles
+*.pmtiles2
+*.pmtiles-journal
