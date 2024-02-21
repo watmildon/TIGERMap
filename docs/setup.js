@@ -25,7 +25,7 @@ document.addEventListener("alpine:init", async () => {
       sources: {
         tiger: {
           type: "vector",
-          url: "pmtiles://https://pub-45b39ea7c4e84b9bac2b3568e1dced89.r2.dev/tiger-map/us-latest.pmtiles",
+          url: "pmtiles://https://pub-45b39ea7c4e84b9bac2b3568e1dced89.r2.dev/us-latest.pmtiles",
           attribution:
             '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
         },
