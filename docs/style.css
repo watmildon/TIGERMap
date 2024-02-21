@@ -23,7 +23,7 @@ h1, html, input, button, textarea {
 }
 
 html, input, button, textarea {
-	//font-size: clamp(1.5vmin, 16pt, 2vmin);
+	font-size: clamp(1.5vmin, 16pt, 2vmin);
 	font-size: 10pt;
 }
 select {
