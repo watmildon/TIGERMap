@@ -15,9 +15,9 @@ document.addEventListener("alpine:init", async () => {
 
   map = new maplibregl.Map({
     container: "map",
-    zoom: 2,
+    zoom: 4,
     hash: "map",
-    center: [0, 0],
+    center: [-91, 39.0],
     style: {
       version: 8,
       layers: mapstyle_layers,
