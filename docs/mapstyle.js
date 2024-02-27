@@ -9,6 +9,7 @@ var mapstyle_layers = [
     type: "line",
     paint: {
       "line-color": "#000000",
+      "line-width": 2,
     },
     "layout": {
       "line-cap": "round",
@@ -17,5 +18,33 @@ var mapstyle_layers = [
     },
     source: "tiger",
     "source-layer": "highways",
+  },
+  {
+    id: "streetaddress",
+    type: "line",
+    paint: {
+      "line-color": "#FF00FF",
+    },
+    "layout": {
+      "line-cap": "round",
+      "line-join": "round",
+      "visibility": "visible"
+    },
+    source: "streetaddress",
+    "source-layer": "streetaddress",
+  },
+  {
+    id: "redlined",
+    type: "line",
+    paint: {
+      "line-color": "#FF0000",
+    },
+    "layout": {
+      "line-cap": "round",
+      "line-join": "round",
+      "visibility": "visible"
+    },
+    source: "redlined",
+    "source-layer": "redlined-D",
   }
 ];

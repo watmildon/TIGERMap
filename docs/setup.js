@@ -6,7 +6,7 @@ document.addEventListener("alpine:init", async () => {
   if (is_local) {
     url_prefix = "http://127.0.0.1:8080/data/";
   } else {
-    url_prefix = "https://worker-green-tooth-99ae.matthew-whilden.workers.dev/";
+    url_prefix = "https://pub-45b39ea7c4e84b9bac2b3568e1dced89.r2.dev/";
   }
 
   // add the PMTiles plugin to the maplibregl global.
@@ -25,7 +25,19 @@ document.addEventListener("alpine:init", async () => {
       sources: {
         tiger: {
           type: "vector",
-          url: "pmtiles://https://pub-45b39ea7c4e84b9bac2b3568e1dced89.r2.dev/us-latest.pmtiles",
+          url: "pmtiles://"+ url_prefix + "us-latest.pmtiles",
+          attribution:
+            '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
+        },
+        streetaddress: {
+          type: "vector",
+          url: "pmtiles://"+ url_prefix + "us-latest-streetaddress.pmtiles",
+          attribution:
+            '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
+        },
+        redlined: {
+          type: "vector",
+          url: "pmtiles://"+ url_prefix + "redlining-grade-d.pmtiles",
           attribution:
             '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
         },
