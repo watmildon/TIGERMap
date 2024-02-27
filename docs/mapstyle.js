@@ -28,7 +28,7 @@ var mapstyle_layers = [
     "layout": {
       "line-cap": "round",
       "line-join": "round",
-      "visibility": "visible"
+      "visibility": "none"
     },
     source: "streetaddress",
     "source-layer": "streetaddress",
@@ -42,7 +42,7 @@ var mapstyle_layers = [
     "layout": {
       "line-cap": "round",
       "line-join": "round",
-      "visibility": "visible"
+      "visibility": "none"
     },
     source: "redlined",
     "source-layer": "redlined-D",
