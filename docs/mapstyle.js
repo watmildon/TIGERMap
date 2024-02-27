@@ -5,7 +5,7 @@ var mapstyle_layers = [
     source: "osmcarto",
   },
   {
-    id: "highway",
+    id: "tigerReview",
     type: "line",
     paint: {
       "line-color": "#000000",

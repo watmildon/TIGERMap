@@ -64,12 +64,12 @@ document.addEventListener("alpine:init", async () => {
 
   map.on('idle', () => {
     // If these two layers were not added to the map, abort
-    if (!map.getLayer('streetaddress') || !map.getLayer('redlined')) {
+    if (!map.getLayer('tigerReview') || !map.getLayer('streetaddress') || !map.getLayer('redlined')) {
         return;
     }
 
     // Enumerate ids of the layers.
-    const toggleableLayerIds = ['streetaddress', 'redlined'];
+    const toggleableLayerIds = ['tigerReview','streetaddress', 'redlined'];
 
     // Set up the corresponding toggle button for each layer.
     for (const id of toggleableLayerIds) {
