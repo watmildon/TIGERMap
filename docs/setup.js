@@ -1,66 +1,52 @@
 document.addEventListener("alpine:init", async () => {
   Alpine.store("tilesets_loaded", false);
 
-  let is_local = new URL(location.href).port == "8000";
+  let is_local = new URL(location.href).port == "8080";
   let url_prefix;
   if (is_local) {
-    url_prefix = "./data/";
+    url_prefix = "http://127.0.0.1:8080/data/";
   } else {
-    url_prefix = "https://data.waterwaymap.org/";
+    url_prefix = "https://pub-45b39ea7c4e84b9bac2b3568e1dced89.r2.dev/";
   }
-
-  let tilesets_raw = await fetch(`${url_prefix}tilesets.json`);
-  tilesets_raw = await tilesets_raw.json();
-  Alpine.store("tilesets", tilesets_raw);
-
-  let tilesets = Alpine.store("tilesets");
 
   // add the PMTiles plugin to the maplibregl global.
   let protocol = new pmtiles.Protocol();
   maplibregl.addProtocol("pmtiles", protocol.tile);
 
-  for (let i in tilesets.tilesets) {
-    let key = tilesets.tilesets[i].key;
-    url = `${url_prefix}${key}.pmtiles`;
-    tilesets.tilesets[i].url = url;
-
-    var p = new pmtiles.PMTiles(url);
-    // this is so we share one instance across the JS code and the map renderer
-    protocol.add(p);
-    tilesets.tilesets[i].pmtiles_obj = p;
-  }
-
-  let params = new URLSearchParams((location.hash ?? "#").substr(1));
-  let len_filter = decodeFilterParams(params.get("len") ?? "");
-  let selected_tileset_key = params.get("tiles") ?? tilesets.selected_tileset;
-  Alpine.store("selected_tileset", selected_tileset_key);
-  Alpine.store("tilesets_loaded", true);
-
-  let sel = tilesets.tilesets.find((el) => el.key === selected_tileset_key);
-  console.assert(sel != undefined);
-
   map = new maplibregl.Map({
     container: "map",
-    zoom: 2,
+    zoom: 4,
     hash: "map",
-    center: [0, 0],
+    center: [-91, 39.0],
     style: {
       version: 8,
       layers: mapstyle_layers,
       glyphs: "./font/{fontstack}/{range}.pbf",
       sources: {
-        waterway: {
+        tiger: {
           type: "vector",
-          url: "pmtiles://" + sel.url,
+          url: "pmtiles://"+ url_prefix + "us-latest.pmtiles",
           attribution:
-            '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>',
+            '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
+        },
+        streetaddress: {
+          type: "vector",
+          url: "pmtiles://"+ url_prefix + "us-latest-streetaddress.pmtiles",
+          attribution:
+            '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
+        },
+        redlined: {
+          type: "vector",
+          url: "pmtiles://"+ url_prefix + "redlining-grade-d.pmtiles",
+          attribution:
+            '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
         },
         osmcarto: {
           type: "raster",
           tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
           tileSize: 256,
           attribution:
-            '<a href="https://www.openstreetmap.org/copyright">© OpenStreetMap contributors</a>',
+            '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
         },
       },
     },
@@ -75,7 +61,7 @@ document.addEventListener("alpine:init", async () => {
     }),
   );
   map.addControl(new maplibregl.NavigationControl());
-  filterParamsChanged(len_filter);
+  
 
   map.setPadding({ top: 57 });
 
