@@ -108,6 +108,52 @@
             <!-- <button type="button" class="btn btn-outline-primary text-nowrap">Open in OSM</button> -->
           </div>
           
+          <div class="btn-group my-2 my-md-0" role="group" aria-label="Basic outlined example">
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                Overlays
+              </button>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="dropdown-item d-flex flex-row align-items-center">
+                    <input class="form-check-input me-1" type="checkbox" id="tigerCheckbox" checked onclick="updateMapLayers()">
+                    <label class="form-check-label user-select-none flex-fill" for="tigerCheckbox">tiger:reviewed=no</label>
+                    <a class="py-2 px-0 px-lg-2 link-info" href="https://wiki.openstreetmap.org/wiki/Key:tiger:reviewed" target="_blank" rel="noopener">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                      </svg>
+                    </a>
+                  </div>
+                </li>
+                <li>
+                  <div class="dropdown-item d-flex flex-row align-items-center">
+                    <input class="form-check-input me-1" type="checkbox" id="housenumberCheckbox" onclick="updateMapLayers()">
+                    <label class="form-check-label user-select-none flex-fill" for="housenumberCheckbox">addr:housenumber</label>
+                    <a class="py-2 px-0 px-lg-2 link-info" href="https://wiki.openstreetmap.org/wiki/Key:addr:housenumber" target="_blank" rel="noopener">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                      </svg>
+                    </a>
+                  </div>
+                </li>
+                <li>
+                  <div class="dropdown-item d-flex flex-row align-items-center">
+                    <input class="form-check-input me-1" type="checkbox" id="redlinedCheckbox" onclick="updateMapLayers()">
+                    <label class="form-check-label user-select-none flex-fill" for="redlinedCheckbox">Redlined</label>
+                    <a class="py-2 px-0 px-lg-2 link-info" href="https://dsl.richmond.edu/panorama/redlining/" target="_blank" rel="noopener">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                      </svg>
+                    </a>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#shareModal">Share</button>
+          </div>
           
           <!-- <button class="dropdown-toggle nav-link btn btn-outline-secondary border-0 bg-white text-secondary" type="button" data-bs-toggle="dropdown" aria-expanded="false">More</button> -->
 
