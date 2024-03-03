@@ -38,9 +38,9 @@
           <div class="btn-group my-2 my-md-0 me-2" role="group" aria-label="Button group with nested dropdown">
             <div class="btn-group" role="group" x-data>
               <a class="btn btn-outline-primary"
-                    @click.prevent="let url = `https://www.openstreetmap.org/edit?editor=id#&source=${encodeURIComponent(location.href)}&hashtags=${encodeURIComponent('#RiverMapping;#WaterwayMapOrg')}&map=${Math.round(map.getZoom())}/${map.getBounds().getCenter().lat}/${map.getBounds().getCenter().lng}`;
+                    @click.prevent="let url = `https://www.openstreetmap.org/edit?editor=id#&source=${encodeURIComponent(location.href)}&hashtags=${encodeURIComponent('#TigerMap')}&map=${Math.round(map.getZoom())}/${map.getBounds().getCenter().lat}/${map.getBounds().getCenter().lng}`;
                   window.open(url);"
-                    @auxclick.prevent="let url = `https://www.openstreetmap.org/edit?editor=id#&source=${encodeURIComponent(location.href)}&hashtags=${encodeURIComponent('#RiverMapping;#WaterwayMapOrg')}&map=${Math.round(map.getZoom())}/${map.getBounds().getCenter().lat}/${map.getBounds().getCenter().lng}`;
+                    @auxclick.prevent="let url = `https://www.openstreetmap.org/edit?editor=id#&source=${encodeURIComponent(location.href)}&hashtags=${encodeURIComponent('#TigerMap')}&map=${Math.round(map.getZoom())}/${map.getBounds().getCenter().lat}/${map.getBounds().getCenter().lng}`;
                   window.open(url);"
                   >
                     Edit
@@ -52,20 +52,32 @@
                 <li id="open_in_id" x-data>
                   <a
                     class="dropdown-item"
-                    @click.prevent="let url = `https://www.openstreetmap.org/edit?editor=id#&source=${encodeURIComponent(location.href)}&hashtags=${encodeURIComponent('#RiverMapping;#WaterwayMapOrg')}&map=${Math.round(map.getZoom())}/${map.getBounds().getCenter().lat}/${map.getBounds().getCenter().lng}`;
+                    @click.prevent="let url = `https://www.openstreetmap.org/edit?editor=id#&source=${encodeURIComponent(location.href)}&hashtags=${encodeURIComponent('#TigerMap')}&map=${Math.round(map.getZoom())}/${map.getBounds().getCenter().lat}/${map.getBounds().getCenter().lng}`;
                   window.open(url);"
-                    @auxclick.prevent="let url = `https://www.openstreetmap.org/edit?editor=id#&source=${encodeURIComponent(location.href)}&hashtags=${encodeURIComponent('#RiverMapping;#WaterwayMapOrg')}&map=${Math.round(map.getZoom())}/${map.getBounds().getCenter().lat}/${map.getBounds().getCenter().lng}`;
+                    @auxclick.prevent="let url = `https://www.openstreetmap.org/edit?editor=id#&source=${encodeURIComponent(location.href)}&hashtags=${encodeURIComponent('#TigerMap')}&map=${Math.round(map.getZoom())}/${map.getBounds().getCenter().lat}/${map.getBounds().getCenter().lng}`;
                   window.open(url);"
                   >
                     Edit with iD
                   </a>
                 </li>
+                <li id="open_in_rapid" x-data>
+                  <a
+                    class="dropdown-item"
+                    @click.prevent="let url = `https://rapideditor.org/rapid#&source=${encodeURIComponent(location.href)}&hashtags=${encodeURIComponent('#TigerMap')}&map=${Math.round(map.getZoom())}/${map.getBounds().getCenter().lat}/${map.getBounds().getCenter().lng}`;
+                  window.open(url);"
+                    @auxclick.prevent="let url = `https://rapideditor.org/rapid#&source=${encodeURIComponent(location.href)}&hashtags=${encodeURIComponent('#TigerMap')}&map=${Math.round(map.getZoom())}/${map.getBounds().getCenter().lat}/${map.getBounds().getCenter().lng}`;
+                  window.open(url);"
+                  >
+                    Edit with Rapid
+                  </a>
+                </li>
+
                 <li><hr class="dropdown-divider"></li>
                 <li id="open_in_josm" x-data="{show_josm_not_running: false}">
                   <a
                     class="dropdown-item"
                     @click="let b = map.getBounds();
-                      let url = `http://127.0.0.1:8111/load_and_zoom?top=${b.getNorth()}&amp;bottom=${b.getSouth()}&amp;left=${b.getWest()}&amp;right=${b.getEast()}&amp;changeset_source=${encodeURIComponent(location.href)}&amp;changeset_hashtags=${encodeURIComponent('#RiverMapping;#WaterwayMapOrg')}`;
+                      let url = `http://127.0.0.1:8111/load_and_zoom?top=${b.getNorth()}&amp;bottom=${b.getSouth()}&amp;left=${b.getWest()}&amp;right=${b.getEast()}&amp;changeset_source=${encodeURIComponent(location.href)}&amp;changeset_hashtags=${encodeURIComponent('#TigerMap')}`;
                       let res_ok = await fetch(url).then(r => r.ok).catch(e => false);
                       this.disabled = false;
                       if (!res_ok) {
@@ -80,7 +92,7 @@
                   <a
                     class="dropdown-item"
                     @click="let b = map.getBounds();
-                      let url = `http://127.0.0.1:8111/load_and_zoom?new_layer=true&top=${b.getNorth()}&amp;bottom=${b.getSouth()}&amp;left=${b.getWest()}&amp;right=${b.getEast()}&amp;changeset_source=${encodeURIComponent(location.href)}&amp;changeset_hashtags=${encodeURIComponent('#RiverMapping;#WaterwayMapOrg')}`;
+                      let url = `http://127.0.0.1:8111/load_and_zoom?new_layer=true&top=${b.getNorth()}&amp;bottom=${b.getSouth()}&amp;left=${b.getWest()}&amp;right=${b.getEast()}&amp;changeset_source=${encodeURIComponent(location.href)}&amp;changeset_hashtags=${encodeURIComponent('#TigerMap')}`;
                       let res_ok = await fetch(url).then(r => r.ok).catch(e => false);
                       this.disabled = false;
                       if (!res_ok) {
@@ -95,7 +107,7 @@
               </ul>
             </div>
             <a
-              id="open_on_osm"
+              id="view_on_osm"
               class="btn btn-outline-primary text-nowrap"
               x-data
               href="#"
@@ -104,9 +116,8 @@
               @click.prevent="let url = `https://www.openstreetmap.org/#map=${Math.round(map.getZoom())}/${map.getBounds().getCenter().lat}/${map.getBounds().getCenter().lng}`; window.open(url);"
               @auxclick.prevent="let url = `https://www.openstreetmap.org/#map=${Math.round(map.getZoom())}/${map.getBounds().getCenter().lat}/${map.getBounds().getCenter().lng}`; window.open(url);"
             >
-              Open in OSM
+              View in OSM
             </a>
-            <!-- <button type="button" class="btn btn-outline-primary text-nowrap">Open in OSM</button> -->
           </div>
           
           <div class="btn-group my-2 my-md-0" role="group" aria-label="Basic outlined example">
