@@ -61,23 +61,10 @@ document.addEventListener("alpine:init", async () => {
     }),
   );
   map.addControl(new maplibregl.NavigationControl());
-  
 
   map.setPadding({ top: 57 });
 
-  map.on("load", () => {
-    let select = document.querySelector("#selected_tileset");
-    select.addEventListener("change", (e) => {
-      let new_key = e.target.value;
-      console.assert(new_key != undefined);
-      let selected_tileset = tilesets.tilesets.find((el) => el.key == new_key);
-      console.assert(selected_tileset != undefined);
-      var loc = new URLSearchParams((location.hash ?? "#").substr(1));
-      loc.set("tiles", new_key);
-      location.hash = "#" + loc.toString();
-      map.getSource("waterway").setUrl("pmtiles://" + selected_tileset.url);
-    });
-  });
+  window.tigerMap = map;
 });
 
 function decodeFilterParams(s) {
