@@ -23,7 +23,7 @@ var mapstyle_layers = [
     id: "tigerReview-rail",
     type: "line",
     paint: {
-      "line-color": "#eb7734",
+      "line-color": "#0000FF",
       "line-width": 2,
     },
     "layout": {
