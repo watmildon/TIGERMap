@@ -20,6 +20,38 @@ var mapstyle_layers = [
     "source-layer": "highways",
   },
   {
+    id: "tigerReview-rail",
+    type: "line",
+    paint: {
+      "line-color": "#eb7734",
+      "line-width": 2,
+    },
+    "layout": {
+      "line-cap": "round",
+      "line-join": "round",
+      "visibility": "none"
+    },
+    source: "tiger",
+    "source-layer": "highways",
+    "filter": ["all", ["==", "railway", "rail"]]
+  },
+  {
+    id: "tigerReview-pipeline",
+    type: "line",
+    paint: {
+      "line-color": "#0000FF",
+      "line-width": 2,
+    },
+    "layout": {
+      "line-cap": "round",
+      "line-join": "round",
+      "visibility": "none"
+    },
+    source: "tiger",
+    "source-layer": "highways",
+    "filter": ["all", ["==", "man_made", "pipeline"]]
+  },
+  {
     id: "streetaddress",
     type: "line",
     paint: {
