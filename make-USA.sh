@@ -1,4 +1,7 @@
-cd "$(dirname "$0")";
+#!/bin/bash
+set -o errexit -o nounset
+cd "$(dirname "$0")"
+
 rm *.pmtiles
 rm *.pmtiles-journal
 rm *.geojson
@@ -7,6 +10,8 @@ rm us-latest-tiger.osm.pbf
 
 rm tilesets/us-latest.pmtiles
 rm tilesets/us-latest-streetaddress.pmtiles
+
+./dl_updates_from_osm.sh
 
 osmium tags-filter --remove-tags --overwrite us-latest.osm.pbf w/tiger:reviewed=no -o us-latest-tiger.osm.pbf
 osmium export --overwrite us-latest-tiger.osm.pbf  -o us-latest-tiger.geojson
