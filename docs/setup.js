@@ -65,4 +65,10 @@ document.addEventListener("alpine:init", async () => {
   map.setPadding({ top: 57 });
 
   window.tigerMap = map;
+
+  document.getElementById('filterTextBox').onkeydown = function(e){
+    if(e.key == 'Enter'){
+      filterMap();
+    }
+ };
 });

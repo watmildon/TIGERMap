@@ -183,9 +183,17 @@
               </ul>
             </div>
           </div>
-          
-          <!-- <button class="dropdown-toggle nav-link btn btn-outline-secondary border-0 bg-white text-secondary" type="button" data-bs-toggle="dropdown" aria-expanded="false">More</button> -->
 
+          <div class="input-group mx-2 my-2 my-md-0 w-25">            
+            <input type="text" class="form-control" value="highway=trunk" id="filterTextBox" aria-label="filter" aria-describedby="basic-addon1">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" type="button" id="filterButton" onclick="filterMap()">Filter</button>
+            </div>
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" type="button" id="clearButton" onclick="clearFilter()">Clear</button>
+            </div>
+          </div>
+          
           <hr class="d-lg-none">
           <ul class="navbar-nav flex-row flex-wrap ms-md-auto d-sm-flex d-md-none d-lg-flex">
             <li class="nav-item col-6 col-lg-auto">
