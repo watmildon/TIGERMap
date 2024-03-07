@@ -7,3 +7,13 @@ function updateMapLayers(checkboxId,layerName) {
         window.tigerMap.setLayoutProperty(layerName, 'visibility', 'none');
     }
   }
+
+function filterMap() {
+    var filterTextBox = document.getElementById("filterTextBox");
+    
+    var kvp = filterTextBox.value.split("=");
+
+    window.tigerMap.setFilter('tigerReview', ['all', ['==', kvp[0], kvp[1]]]);
+
+    window.tigerMap.setLayoutProperty('tigerReview', 'visibility', 'visible');
+  }
