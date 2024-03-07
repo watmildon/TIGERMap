@@ -17,3 +17,10 @@ function filterMap() {
 
     window.tigerMap.setLayoutProperty('tigerReview', 'visibility', 'visible');
   }
+
+  function clearFilter() {
+
+    window.tigerMap.setFilter('tigerReview', null);
+
+    window.tigerMap.setLayoutProperty('tigerReview', 'visibility', 'visible');
+  }
