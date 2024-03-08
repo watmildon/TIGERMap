@@ -12,6 +12,12 @@ function filterMap() {
     var filterTextBox = document.getElementById("filterTextBox");
     var filterText = filterTextBox.value;
     
+    if (filterText === "")
+    {
+        clearFilter();
+        return;
+    }
+
     if (filterText.includes('='))
     {
         var kvp = filterText.split("=");
