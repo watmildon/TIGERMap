@@ -12,6 +12,12 @@ function filterMap() {
     var filterTextBox = document.getElementById("filterTextBox");
     var filterText = filterTextBox.value;
     
+    if (filterText === "")
+    {
+        clearFilter();
+        return;
+    }
+
     if (filterText.includes('='))
     {
         var kvp = filterText.split("=");
@@ -40,7 +46,8 @@ function filterMap() {
         }
         else
         {
-            if (kvp[1] = "*")
+            if (kvp[1] === "*")
+
             {
                 window.tigerMap.setFilter('tigerReview', ["has",kvp[0]]);
             }

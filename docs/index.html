@@ -185,7 +185,7 @@
           </div>
 
           <div class="input-group mx-2 my-2 my-md-0 w-25">            
-            <input type="text" class="form-control" value="highway=trunk" id="filterTextBox" aria-label="filter" aria-describedby="basic-addon1">
+            <input type="text" class="form-control" value="highway=trunk" id="filterTextBox" data-bs-html="true" title="<b>Try these:</b><br/>highway<br/>railway=*<br/>surface=paved<br/>highway=motorway,trunk<br/>" data-bs-toggle="tooltip" data-placement="bottom" data-html="true" aria-label="filter" aria-describedby="basic-addon1">
             <div class="input-group-append">
               <button class="btn btn-outline-secondary" type="button" id="filterButton" onclick="filterMap()">Filter</button>
             </div>
@@ -193,7 +193,7 @@
               <button class="btn btn-outline-secondary" type="button" id="clearButton" onclick="clearFilter()">Clear</button>
             </div>
           </div>
-          
+
           <hr class="d-lg-none">
           <ul class="navbar-nav flex-row flex-wrap ms-md-auto d-sm-flex d-md-none d-lg-flex">
             <li class="nav-item col-6 col-lg-auto">
