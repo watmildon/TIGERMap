@@ -1,5 +1,4 @@
 #!/bin/bash
-set -o errexit -o nounset
 cd "$(dirname "$0")"
 
 rm *.pmtiles
@@ -11,7 +10,12 @@ rm us-latest-tiger.osm.pbf
 rm tilesets/us-latest.pmtiles
 rm tilesets/us-latest-streetaddress.pmtiles
 
-./dl_updates_from_osm.sh
+if [ ! -s us-latest.osm.pbf ] ; then
+	echo "No us-latest.osm.pbf, downloading.."
+	curl -O https://download.geofabrik.de/north-america/us-latest.osm.pbf
+fi
+
+pyosmium-up-to-date -v --server https://download.geofabrik.de/north-america/us-updates/ -s 10000 us-latest.osm.pbf
 
 osmium tags-filter --remove-tags --overwrite us-latest.osm.pbf w/tiger:reviewed=no -o us-latest-tiger.osm.pbf
 osmium export --overwrite us-latest-tiger.osm.pbf  -o us-latest-tiger.geojson
