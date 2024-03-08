@@ -47,6 +47,7 @@ function filterMap() {
         else
         {
             if (kvp[1] === "*")
+
             {
                 window.tigerMap.setFilter('tigerReview', ["has",kvp[0]]);
             }
