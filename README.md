@@ -1,7 +1,7 @@
 # TIGERMap!
 A map to help aid OpenStreetMap mappers in the ongoing effort to complete the [review of roadway data](https://wiki.openstreetmap.org/wiki/TIGER_fixup) from the [TIGER import](https://wiki.openstreetmap.org/wiki/TIGER).
 
-Some links about where you can find more about TIGERMap
+Some links with more about TIGERMap and its usage.
 
 * [OSM Community Forum announcement thread](https://community.openstreetmap.org/t/announcing-tigermap-tiger-reviewed-no/110004)
 * [OSM Changes that have used this tool](https://resultmaps.neis-one.org/osm-changesets?comment=TIGERMap)
