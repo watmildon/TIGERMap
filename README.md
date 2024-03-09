@@ -24,9 +24,10 @@ The site has 5 overlay layers available but I would love to add anything folks f
 The top navigation bar has a text box for users to input filters that may interest them. Filters always apply to the `tiger:reviewed=no` layer. No tags have been stripped so there's a rich set of tags to investigate and get inspiration from. Here's some ideas to try:
 
 * cycleway
+* lanes
 * lit
 * surface
-* lanes
+* tiger:source
 * surface=*
 * highway=trunk
 * railway=abandoned
