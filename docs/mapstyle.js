@@ -18,6 +18,7 @@ var mapstyle_layers = [
     },
     source: "tiger",
     "source-layer": "highways",
+    "filter": ["all", ["==", "tiger:reviewed", "no"]]
   },
   {
     id: "tigerReview-rail",
