@@ -60,7 +60,14 @@ function filterMap() {
     }
     else
     {
-        window.tigerMap.setFilter('tigerReview', ["has",filterText]);
+        if (filterText[0] === "-")
+        {
+            window.tigerMap.setFilter('tigerReview', ["!",["has",filterText.substring(1)]]);
+        }
+        else
+        {
+            window.tigerMap.setFilter('tigerReview', ["has",filterText]);
+        }
     }
   }
 
