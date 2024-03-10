@@ -63,8 +63,16 @@ document.addEventListener("alpine:init", async () => {
   map.addControl(new maplibregl.NavigationControl());
 
   map.setPadding({ top: 57 });
+  
+  var scale = new maplibregl.ScaleControl({
+    maxWidth: 200,
+    unit: "imperial",
+  });
+  map.addControl(scale);
 
   window.tigerMap = map;
+
+  
 
   document.getElementById('filterTextBox').onkeydown = function(e){
     if(e.key == 'Enter'){
