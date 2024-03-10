@@ -11,13 +11,14 @@ Inspired by [Amanda McCann's](https://en.osm.town/@amapanda) https://www.waterwa
 
 ## Layers
 
-The site has 5 overlay layers available but I would love to add anything folks find useful.
+The site has 6 overlay layers available but I would love to add anything folks find useful.
 
 * `tiger:reviewed=no` - All items with this key=value. The work to be done.
-* `addr:housenumber` - All items with this key=value. Areas where there may be corroborating evidence for roadway names
-* `tiger railway` - All items with `tiger:reviewed=no` and `railway=rail`. 
-* `tiger pipeline` - All items with `tiger:reviewed=no` and `man_made=pipeline`. 
-* `redlined` - the set of neighborhoods that were historically [redlined](https://dsl.richmond.edu/panorama/redlining/)
+* `addr:housenumber` - All items with this key=value. Areas where there may be corroborating evidence for roadway names.
+* `tiger railway` - All items with `tiger:reviewed=no` and `railway=rail`.
+* `tiger pipeline` - All items with `tiger:reviewed=no` and `man_made=pipeline`.
+* `National Address Database` - A rough map of where information exists in the [National Address Database](https://www.transportation.gov/gis/national-address-database) data file.
+* `redlined` - The set of neighborhoods that were historically [redlined](https://dsl.richmond.edu/panorama/redlining/).
 
 ## Filters
 

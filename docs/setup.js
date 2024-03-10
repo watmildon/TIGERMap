@@ -41,6 +41,12 @@ document.addEventListener("alpine:init", async () => {
           attribution:
             '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
         },
+        NAD: {
+          type: "vector",
+          url: "pmtiles://"+ url_prefix + "NAD_r15.pmtiles",
+          attribution:
+            '© Public Domain, USDOT',
+        },
         osmcarto: {
           type: "raster",
           tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
