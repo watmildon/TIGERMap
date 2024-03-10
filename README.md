@@ -21,13 +21,16 @@ The site has 5 overlay layers available but I would love to add anything folks f
 
 ## Filters
 
-The top navigation bar has a text box for users to input filters that may interest them. Filters always apply to the `tiger:reviewed=no` layer. No tags have been stripped so there's a rich set of tags to investigate and get inspiration from. Here's some ideas to try:
+The top navigation bar has a text box for users to input filters that may interest them. Filters always apply to the `tiger:reviewed=no` layer. It currently accepts filter text in the form of key names, key=value, key=value1,value2. It will also allow you to look for all items NOT having a certain key by adding a dash in front of the key value.
+
+No tags have been stripped so there's a rich set of tags to investigate and get inspiration from. Here's some ideas to try:
 
 * cycleway
 * lanes
 * lit
 * surface
 * tiger:source
+* -name
 * surface=*
 * highway=trunk
 * railway=abandoned
