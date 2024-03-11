@@ -3,8 +3,16 @@ function updateMapLayers(checkboxId,layerName) {
     
     if (checkBox.checked == true){
         window.tigerMap.setLayoutProperty(layerName, 'visibility', 'visible');
+        if (layerName === "streetaddress")
+        {
+            window.tigerMap.setLayoutProperty("streetaddress-node", 'visibility', 'visible');
+        }
     } else {
         window.tigerMap.setLayoutProperty(layerName, 'visibility', 'none');
+        if (layerName === "streetaddress")
+        {
+            window.tigerMap.setLayoutProperty("streetaddress-node", 'visibility', 'none');
+        }
     }
   }
 

@@ -67,6 +67,20 @@ var mapstyle_layers = [
     "source-layer": "streetaddress",
   },
   {
+    id: "streetaddress-node",
+    type: "circle",
+    paint: {
+      "circle-color": "#FF00FF",
+      "circle-radius":2,
+    },
+    "layout": {
+      "visibility": "none"
+    },
+    source: "streetaddress",
+    "source-layer": "streetaddress",
+    filter: ["==","$type","Point"]
+  },
+  {
     id: "NAD",
     type: "circle",
     paint: {
