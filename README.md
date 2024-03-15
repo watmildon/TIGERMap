@@ -17,7 +17,7 @@ The site has 6 overlay layers available but I would love to add anything folks f
 * `addr:housenumber` - All items with this key=value. Areas where there may be corroborating evidence for roadway names.
 * `tiger railway` - All items with `tiger:reviewed=no` and `railway=rail`.
 * `tiger pipeline` - All items with `tiger:reviewed=no` and `man_made=pipeline`.
-* `National Address Database` - A rough map of where information exists in the [National Address Database](https://www.transportation.gov/gis/national-address-database) data file.
+* `National Address Database` - A rough map of where information exists in the [National Address Database](https://www.transportation.gov/gis/national-address-database) data file. This is useful for finding places where you can use NAD to do name review. I have documented my own technique in [this diary entry](https://www.openstreetmap.org/user/watmildon/diary/400827).
 * `redlined` - The set of neighborhoods that were historically [redlined](https://dsl.richmond.edu/panorama/redlining/).
 
 ## Filters
