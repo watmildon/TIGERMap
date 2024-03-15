@@ -53,10 +53,15 @@ document.addEventListener("alpine:init", async () => {
           tileSize: 256,
           attribution:
             '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
-        },
+        }
       },
     },
   });
+
+
+  addEclipseData(map);
+
+
   // Add geolocate control to the map.
   map.addControl(
     new maplibregl.GeolocateControl({

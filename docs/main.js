@@ -7,11 +7,21 @@ function updateMapLayers(checkboxId,layerName) {
         {
             window.tigerMap.setLayoutProperty("streetaddress-node", 'visibility', 'visible');
         }
+        if (layerName === "EclipseCenterline")
+        {
+            window.tigerMap.setLayoutProperty("penumbra", 'visibility', 'visible');
+        }
+        
+
     } else {
         window.tigerMap.setLayoutProperty(layerName, 'visibility', 'none');
         if (layerName === "streetaddress")
         {
             window.tigerMap.setLayoutProperty("streetaddress-node", 'visibility', 'none');
+        }
+        if (layerName === "EclipseCenterline")
+        {
+            window.tigerMap.setLayoutProperty("penumbra", 'visibility', 'none');
         }
     }
   }
