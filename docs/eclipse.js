@@ -1,5 +1,6 @@
 function addEclipseData(map)
 {
+    // Eclipse data simplified from https://svs.gsfc.nasa.gov/5073
     map.on('load', () => {
         map.addSource('EclipseCenterline', {
             'type': 'geojson',
