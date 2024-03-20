@@ -64,9 +64,9 @@
                 <li id="open_in_rapid" x-data>
                   <a
                     class="dropdown-item"
-                    @click.prevent="let url = `https://rapideditor.org/rapid#&source=${encodeURIComponent(location.href)}&hashtags=${encodeURIComponent('#TigerMap')}&map=${Math.round(map.getZoom())}/${map.getBounds().getCenter().lat}/${map.getBounds().getCenter().lng}`;
+                    @click.prevent="let url = `https://rapideditor.org/rapid#&source=${encodeURIComponent(location.href)}&datasets=e75b56f13b404d7d8b47ef8be1c619ec&hashtags=${encodeURIComponent('#TigerMap')}&map=${Math.round(map.getZoom())}/${map.getBounds().getCenter().lat}/${map.getBounds().getCenter().lng}`;
                   window.open(url);"
-                    @auxclick.prevent="let url = `https://rapideditor.org/rapid#&source=${encodeURIComponent(location.href)}&hashtags=${encodeURIComponent('#TigerMap')}&map=${Math.round(map.getZoom())}/${map.getBounds().getCenter().lat}/${map.getBounds().getCenter().lng}`;
+                    @auxclick.prevent="let url = `https://rapideditor.org/rapid#&source=${encodeURIComponent(location.href)}&datasets=e75b56f13b404d7d8b47ef8be1c619ec&hashtags=${encodeURIComponent('#TigerMap')}&map=${Math.round(map.getZoom())}/${map.getBounds().getCenter().lat}/${map.getBounds().getCenter().lng}`;
                   window.open(url);"
                   >
                     Edit with Rapid
