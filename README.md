@@ -1,11 +1,16 @@
 # TIGERMap!
-A map to help aid OpenStreetMap mappers in the ongoing effort to complete the [review of roadway data](https://wiki.openstreetmap.org/wiki/TIGER_fixup) from the [TIGER import](https://wiki.openstreetmap.org/wiki/TIGER).
+A map to help aid OpenStreetMap mappers in the ongoing effort to complete the [review of data](https://wiki.openstreetmap.org/wiki/TIGER_fixup) from the [TIGER import](https://wiki.openstreetmap.org/wiki/TIGER).
 
-Some links with more about TIGERMap and its usage.
+Some links with more about TIGERMap and its usage:
 
 * [OSM Community Forum announcement thread](https://community.openstreetmap.org/t/announcing-tigermap-tiger-reviewed-no/110004)
 * [OSM Changes that have used this tool](https://resultmaps.neis-one.org/osm-changesets?comment=TIGERMap)
 * [Changesets on OSMCHA](https://osmcha.org/?filters=%7B%22metadata%22%3A%5B%7B%22label%22%3A%22hashtags%3D%23TIGERMap%22%2C%22value%22%3A%22hashtags%3D%23TIGERMap%22%7D%5D%7D)
+
+Some links on how to perform a "TIGER Review" of an OSM object:
+
+* [Railway](https://wiki.openstreetmap.org/wiki/United_States/Railroads#Editing_Railroads_starting_from_TIGER_data)
+* [A Community forum discussion focused on roadways](https://community.openstreetmap.org/t/8228)
 
 Inspired by [Amanda McCann's](https://en.osm.town/@amapanda) https://www.waterwaymap.org with a UI overhaul from user [Mxdanger](https://www.openstreetmap.org/user/Mxdanger).
 
