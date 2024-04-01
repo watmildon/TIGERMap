@@ -80,10 +80,10 @@ document.addEventListener("alpine:init", async () => {
     unit: "imperial",
   });
   map.addControl(scale);
-
-  window.tigerMap = map;
-
+  map.dragRotate.disable();
+  map.touchZoomRotate.disableRotation();
   
+  window.tigerMap = map;
 
   document.getElementById('filterTextBox').onkeydown = function(e){
     if(e.key == 'Enter'){
@@ -91,8 +91,8 @@ document.addEventListener("alpine:init", async () => {
     }
  };
 
- var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+  var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
   return new bootstrap.Tooltip(tooltipTriggerEl)
 });
 });
