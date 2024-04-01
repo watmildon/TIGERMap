@@ -25,42 +25,35 @@ document.addEventListener("alpine:init", async () => {
       sources: {
         tiger: {
           type: "vector",
-          url: "pmtiles://"+ url_prefix + "us-latest.pmtiles",
-          attribution:
-            '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
+          url: "pmtiles://" + url_prefix + "us-latest.pmtiles",
+          attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
         },
         streetaddress: {
           type: "vector",
-          url: "pmtiles://"+ url_prefix + "us-latest-streetaddress.pmtiles",
-          attribution:
-            '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
+          url: "pmtiles://" + url_prefix + "us-latest-streetaddress.pmtiles",
+          attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
         },
         redlined: {
           type: "vector",
-          url: "pmtiles://"+ url_prefix + "redlining-grade-d.pmtiles",
-          attribution:
-            '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
+          url: "pmtiles://" + url_prefix + "redlining-grade-d.pmtiles",
+          attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
         },
         NAD: {
           type: "vector",
-          url: "pmtiles://"+ url_prefix + "NAD_r15.pmtiles",
-          attribution:
-            '© Public Domain, USDOT',
+          url: "pmtiles://" + url_prefix + "NAD_r15.pmtiles",
+          attribution: "© Public Domain, USDOT",
         },
         osmcarto: {
           type: "raster",
           tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
           tileSize: 256,
-          attribution:
-            '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
-        }
+          attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
+        },
       },
     },
   });
 
-
   addEclipseData(map);
-
 
   // Add geolocate control to the map.
   map.addControl(
@@ -74,7 +67,7 @@ document.addEventListener("alpine:init", async () => {
   map.addControl(new maplibregl.NavigationControl());
 
   map.setPadding({ top: 57 });
-  
+
   var scale = new maplibregl.ScaleControl({
     maxWidth: 200,
     unit: "imperial",
@@ -82,17 +75,17 @@ document.addEventListener("alpine:init", async () => {
   map.addControl(scale);
   map.dragRotate.disable();
   map.touchZoomRotate.disableRotation();
-  
+
   window.tigerMap = map;
 
-  document.getElementById('filterTextBox').onkeydown = function(e){
-    if(e.key == 'Enter'){
+  document.getElementById("filterTextBox").onkeydown = function (e) {
+    if (e.key == "Enter") {
       filterMap();
     }
- };
+  };
 
-  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
   var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-  return new bootstrap.Tooltip(tooltipTriggerEl)
-});
+    return new bootstrap.Tooltip(tooltipTriggerEl);
+  });
 });
