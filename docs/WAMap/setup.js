@@ -15,33 +15,18 @@ document.addEventListener("alpine:init", async () => {
 
   map = new maplibregl.Map({
     container: "map",
-    zoom: 4,
+    zoom: 7,
     hash: "map",
-    center: [-91, 39.0],
+    center: [-119, 46.5],
     style: {
       version: 8,
       layers: mapstyle_layers,
       glyphs: "./font/{fontstack}/{range}.pbf",
       sources: {
-        tiger: {
+        WAMap: {
           type: "vector",
-          url: "pmtiles://" + url_prefix + "us-latest.pmtiles",
+          url: "pmtiles://" + url_prefix + "washington-latest.pmtiles",
           attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
-        },
-        streetaddress: {
-          type: "vector",
-          url: "pmtiles://" + url_prefix + "us-latest-streetaddress.pmtiles",
-          attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
-        },
-        redlined: {
-          type: "vector",
-          url: "pmtiles://" + url_prefix + "redlining-grade-d.pmtiles",
-          attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
-        },
-        NAD: {
-          type: "vector",
-          url: "pmtiles://" + url_prefix + "NAD_r15.pmtiles",
-          attribution: "© Public Domain, USDOT",
         },
         osmcarto: {
           type: "raster",
@@ -52,8 +37,6 @@ document.addEventListener("alpine:init", async () => {
       },
     },
   });
-
-  addEclipseData(map);
 
   // Add geolocate control to the map.
   map.addControl(
