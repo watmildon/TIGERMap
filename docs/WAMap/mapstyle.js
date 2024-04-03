@@ -24,7 +24,7 @@ var mapstyle_layers = [
     type: "circle",
     paint: {
       "circle-color": "#000000",
-      "circle-radius":2,
+      "circle-radius":4,
     },
     "layout": {
       "visibility": "visible"
