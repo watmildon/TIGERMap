@@ -17,7 +17,7 @@ document.addEventListener("alpine:init", async () => {
     container: "map",
     zoom: 7,
     hash: "map",
-    center: [-119, 46.5],
+    center: [-120.6, 47.4],
     style: {
       version: 8,
       layers: mapstyle_layers,
