@@ -28,6 +28,13 @@ function updateMapLayers(checkboxId, layerName) {
       clearFilter();
       return;
     }
+
+    // add filter to url
+    var queryParams = new URLSearchParams(window.location.search);
+    queryParams.set('filter', encodeURIComponent(filterTextBox.value));
+    const newQueryString = queryParams.toString();
+    const newURL = `${window.location.pathname}?${newQueryString}${window.location.hash}`;
+    window.history.replaceState({}, '', newURL);
   
     if (filterText.includes("=")) {
       var kvp = filterText.split("=");
@@ -66,6 +73,15 @@ function updateMapLayers(checkboxId, layerName) {
   }
   
   function clearFilter() {
+    //update the url
+    const url = new URL(window.location.href);
+    const params = new URLSearchParams(url.search);
+    params.delete('filter');
+    url.search = params.toString();
+    const newURL = url.toString();
+    window.history.replaceState({}, '', newURL);
+  
+    // modify the map layers
     window.tigerMap.setFilter("tigerReview", null);
   
     window.tigerMap.setLayoutProperty("tigerReview", "visibility", "visible");

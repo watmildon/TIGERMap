@@ -78,6 +78,20 @@ document.addEventListener("alpine:init", async () => {
 
   window.tigerMap = map;
 
+  // Manage filter query parameter
+  const url = new URL(window.location.href);
+  const myValue = url.searchParams.has('filter')
+    ? url.searchParams.get('filter')
+    : null;
+
+  if (myValue !== null) {
+    const textBox = document.getElementById('filterTextBox');
+    textBox.value = decodeURIComponent(myValue);
+    window.addEventListener('load', function() {
+      filterMap();
+    });
+  }
+
   document.getElementById("filterTextBox").onkeydown = function (e) {
     if (e.key == "Enter") {
       filterMap();
