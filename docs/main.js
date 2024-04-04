@@ -64,10 +64,24 @@ function updateMapLayers(checkboxId, layerName) {
         window.tigerMap.setLayoutProperty("tigerReview", "visibility", "visible");
       }
     } else {
-      if (filterText[0] === "-") {
-        window.tigerMap.setFilter("tigerReview", ["!", ["has", filterText.substring(1)]]);
+      // key1,-key2
+      // ["all",["has","highway"],["!",["has","maxspeed"]]]
+      if (filterText.includes(",")) {
+        var values = filterText.split(",");
+        if (values[1][0] === "-")
+        {
+          window.tigerMap.setFilter("tigerReview",["all",["has",values[0]],["!",["has",values[1].substring(1)]]]);
+        }
+        else
+        {
+          window.tigerMap.setFilter("tigerReview",["all",["has",values[0]],["has",values[1]]]);
+        }
       } else {
-        window.tigerMap.setFilter("tigerReview", ["has", filterText]);
+        if (filterText[0] === "-") {
+          window.tigerMap.setFilter("tigerReview", ["!", ["has", filterText.substring(1)]]);
+        } else {
+          window.tigerMap.setFilter("tigerReview", ["has", filterText]);
+        }
       }
     }
   }
