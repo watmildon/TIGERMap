@@ -2,7 +2,6 @@
     var filterTextBox = document.getElementById("filterTextBox");
     var filterText = filterTextBox.value;
 
-
     if (filterText === "") {
       clearFilter();
       return;
@@ -15,6 +14,13 @@
     const newURL = `${window.location.pathname}?${newQueryString}${window.location.hash}`;
     window.history.replaceState({}, '', newURL);
   
+    // supported query strings:
+    // key
+    // -key
+    // key1,-key2
+    // key=*
+    // key=value
+    // key=value1,value2,value3
     if (filterText.includes("=")) {
       var kvp = filterText.split("=");
       if (filterText.includes(",")) {
@@ -50,12 +56,28 @@
         window.tigerMap.setLayoutProperty("allFeatures-node", "visibility", "visible");
       }
     } else {
-      if (filterText[0] === "-") {
-        window.tigerMap.setFilter("allFeatures", ["!", ["has", filterText.substring(1)]]);
-        window.tigerMap.setFilter("allFeatures-node", ["!", ["has", filterText.substring(1)]]);
+      // key1,-key2
+      // ["all",["has","highway"],["!",["has","maxspeed"]]]
+      if (filterText.includes(",")) {
+        var values = filterText.split(",");
+        if (values[1][0] === "-")
+        {
+          window.tigerMap.setFilter("allFeatures",["all",["has",values[0]],["!",["has",values[1].substring(1)]]]);
+          window.tigerMap.setFilter("allFeatures-node",["all",["has",values[0]],["!",["has",values[1].substring(1)]]]);
+        }
+        else
+        {
+          window.tigerMap.setFilter("allFeatures",["all",["has",values[0]],["has",values[1]]]);
+          window.tigerMap.setFilter("allFeatures-node",["all",["has",values[0]],["has",values[1]]]);
+        }
       } else {
-        window.tigerMap.setFilter("allFeatures", ["has", filterText]);
-        window.tigerMap.setFilter("allFeatures-node", ["has", filterText]);
+        if (filterText[0] === "-") {
+          window.tigerMap.setFilter("allFeatures", ["!", ["has", filterText.substring(1)]]);
+          window.tigerMap.setFilter("allFeatures-node", ["!", ["has", filterText.substring(1)]]);
+        } else {
+          window.tigerMap.setFilter("allFeatures", ["has", filterText]);
+          window.tigerMap.setFilter("allFeatures-node", ["has", filterText]);
+        }
       }
     }
   }
