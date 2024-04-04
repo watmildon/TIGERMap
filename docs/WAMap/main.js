@@ -1,11 +1,19 @@
   function filterMap() {
     var filterTextBox = document.getElementById("filterTextBox");
     var filterText = filterTextBox.value;
-  
+
+
     if (filterText === "") {
       clearFilter();
       return;
     }
+
+    // add filter to url
+    var queryParams = new URLSearchParams(window.location.search);
+    queryParams.set('filter', encodeURIComponent(filterTextBox.value));
+    const newQueryString = queryParams.toString();
+    const newURL = `${window.location.pathname}?${newQueryString}${window.location.hash}`;
+    window.history.replaceState({}, '', newURL);
   
     if (filterText.includes("=")) {
       var kvp = filterText.split("=");
@@ -53,6 +61,15 @@
   }
   
   function clearFilter() {
+    //update the url
+    const url = new URL(window.location.href);
+    const params = new URLSearchParams(url.search);
+    params.delete('filter');
+    url.search = params.toString();
+    const newURL = url.toString();
+    window.history.replaceState({}, '', newURL);
+
+    // modify the map layers
     window.tigerMap.setFilter("allFeatures", null);
     window.tigerMap.setFilter("allFeatures-node", null);
   
