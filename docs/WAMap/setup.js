@@ -59,6 +59,37 @@ document.addEventListener("alpine:init", async () => {
   map.dragRotate.disable();
   map.touchZoomRotate.disableRotation();
 
+  // Query functionalit
+  const onEnter = e => {
+    map.getCanvas().style.cursor = "pointer";
+  };
+  const onLeave = e => {
+    map.getCanvas().style.cursor = "";
+  }
+  const onClick = e => {
+    function feature2html({ properties }, i) {
+      let html = `<h4>feature #${i+1}</h4>`;
+      html += "<ul>"
+      for (const [key, val] of Object.entries(properties)) {
+        html += `<li>${key}=${val}</li>`;
+      }
+      html += "</ul>";
+      return html;
+    }
+    const html = `<div class="inspect-popup">${e.features.map(feature2html).join("<br>")}</div>`;
+    const popup = new maplibregl.Popup()
+          .setLngLat(e.lngLat)
+          .setHTML(html)
+          .addTo(map);
+    popup._container.style['max-width'] = '';
+  };
+  map.on("mouseenter", "allFeatures", onEnter);
+  map.on("mouseleave", "allFeatures", onLeave);
+  map.on("click", "allFeatures", onClick);
+  map.on("mouseenter", "allFeatures-node", onEnter);
+  map.on("mouseleave", "allFeatures-node", onLeave);
+  map.on("click", "allFeatures-node", onClick);
+
   window.tigerMap = map;
 
   const url = new URL(window.location.href);

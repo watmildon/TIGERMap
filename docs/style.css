@@ -35,3 +35,12 @@ main {
 	right: env(safe-area-inset-left, 0) !important;
 	top: unset !important;
 }
+
+.maplibregl-popup .inspect-popup ul {
+    list-style-type: none;
+    padding: 0
+}
+.maplibregl-popup .inspect-popup li {
+    font-size: .8rem;
+    font-family: monospace;
+}
