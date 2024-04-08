@@ -80,8 +80,8 @@ document.addEventListener("alpine:init", async () => {
     const popup = new maplibregl.Popup()
           .setLngLat(e.lngLat)
           .setHTML(html)
-          .addTo(map);
-    popup._container.style['max-width'] = '';
+          .addTo(map)
+          .setMaxWidth("none");
   };
   map.on("mouseenter", "allFeatures", onEnter);
   map.on("mouseleave", "allFeatures", onLeave);
