@@ -36,51 +36,45 @@ function updateMapLayers(checkboxId, layerName) {
     const newURL = `${window.location.pathname}?${newQueryString}${window.location.hash}`;
     window.history.replaceState({}, '', newURL);
   
-    if (filterText.includes("=")) {
-      var kvp = filterText.split("=");
-      if (filterText.includes(",")) {
-        // surface=paved,asphalt
-        // "filter": ["match", ["get", "surface"], ["paved", "asphalt"], true, false]
-        var values = kvp[1].split(",");
-  
-        if (values.length == 2) {
-          window.tigerMap.setFilter("tigerReview", ["match", ["get", kvp[0]], [values[0], values[1]], true, false]);
-        }
-        if (values.length == 3) {
-          window.tigerMap.setFilter("tigerReview", ["match", ["get", kvp[0]], [values[0], values[1], values[2]], true, false]);
-        }
-        if (values.length == 4) {
-          window.tigerMap.setFilter("tigerReview", ["match", ["get", kvp[0]], [values[0], values[1], values[2], values[3]], true, false]);
-        }
-        if (values.length == 5) {
-          window.tigerMap.setFilter("tigerReview", ["match", ["get", kvp[0]], [values[0], values[1], values[2], values[3], values[4]], true, false]);
-        }
-      } else {
-        if (kvp[1] === "*") {
-          window.tigerMap.setFilter("tigerReview", ["has", kvp[0]]);
-        } else {
-          window.tigerMap.setFilter("tigerReview", ["all", ["==", kvp[0], kvp[1]]]);
-        }
-        window.tigerMap.setLayoutProperty("tigerReview", "visibility", "visible");
+    // key1;key2;key3...
+    // -key1;key2...
+    // key1=value
+    // key=value
+    // key!=value
+    // ["all", ["==", key, value]]
+    // key1;key2=value2
+    // ["all",["has",key1],["all",["==",key2,value2]]]
+
+    // TODO
+    // surface=paved,asphalt
+    // "filter": ["match", ["get", "surface"], ["paved", "asphalt"], true, false]
+    filterText = filterText.replace("=*",""); // convert key=* to key
+
+    var keyParts = filterText.split(";");
+    var filterArray = ["all"];
+    for (const part of keyParts)
+    {
+      if (part.includes("!="))
+      {
+        var parts = part.split("!=");
+        var filterPart = ["all",["!=", parts[0], parts[1]]]
+        filterArray.push(filterPart);
       }
-    } else {
-      // key1,-key2
-      // ["all",["has","highway"],["!",["has","maxspeed"]]]
-      if (filterText.includes(",")) {
-        var values = filterText.split(",");
-        if (values[1][0] === "-")
+      else if (part.includes("="))
+      {
+        var parts = part.split("=");
+        var filterPart = ["all",["==", parts[0], parts[1]]]
+        filterArray.push(filterPart);
+      }
+      else
+      {
+        if (part[0] === "!")
         {
-          window.tigerMap.setFilter("tigerReview",["all",["has",values[0]],["!",["has",values[1].substring(1)]]]);
+          filterArray.push(["!has", part.substring(1)]);
         }
         else
         {
-          window.tigerMap.setFilter("tigerReview",["all",["has",values[0]],["has",values[1]]]);
-        }
-      } else {
-        if (filterText[0] === "-") {
-          window.tigerMap.setFilter("tigerReview", ["!", ["has", filterText.substring(1)]]);
-        } else {
-          window.tigerMap.setFilter("tigerReview", ["has", filterText]);
+          filterArray.push(["has", part]);
         }
       }
     }
