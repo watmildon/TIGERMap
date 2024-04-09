@@ -33,14 +33,14 @@ No tags have been stripped so there's a rich set of tags to investigate and get 
 
 * cycleway
 * lanes
-* lit
 * surface
 * tiger:source
-* -name
+* !name
 * surface=*
+* highway;surface
 * highway=trunk
 * railway=abandoned
-* surface=paved,asphalt
+* surface=paved;surface=asphalt
 
 ## Copyright
 
