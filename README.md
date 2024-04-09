@@ -40,7 +40,7 @@ No tags have been stripped so there's a rich set of tags to investigate and get 
 * highway;surface
 * highway=trunk
 * railway=abandoned
-* surface=paved;surface=asphalt
+* highway=secondary;surface=paved,asphalt
 
 ## Copyright
 
