@@ -44,3 +44,7 @@ main {
     font-size: .8rem;
     font-family: monospace;
 }
+
+.tooltip-inner {
+    max-width: 100% !important;
+}
