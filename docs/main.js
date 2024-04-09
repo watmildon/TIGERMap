@@ -37,17 +37,18 @@ function updateMapLayers(checkboxId, layerName) {
     window.history.replaceState({}, '', newURL);
   
     // key1;key2;key3...
-    // -key1;key2...
+    // !key1;key2...
     // key1=value
     // key=value
     // key!=value
     // ["all", ["==", key, value]]
     // key1;key2=value2
     // ["all",["has",key1],["all",["==",key2,value2]]]
-
-    // TODO
     // surface=paved,asphalt
     // "filter": ["match", ["get", "surface"], ["paved", "asphalt"], true, false]
+    // surface!=paved,asphalt
+    // "filter": ["match", ["get", "surface"], ["paved", "asphalt"], false, true]
+
     filterText = filterText.replace("=*",""); // convert key=* to key
 
     var keyParts = filterText.split(";");
@@ -57,13 +58,23 @@ function updateMapLayers(checkboxId, layerName) {
       if (part.includes("!="))
       {
         var parts = part.split("!=");
-        var filterPart = ["all",["!=", parts[0], parts[1]]]
+        if (parts[1].includes(","))
+        {
+          parts[1] = parts[1].split(",");
+        }
+
+        var filterPart = ["match",["get", parts[0]],parts[1],false,true]
         filterArray.push(filterPart);
       }
       else if (part.includes("="))
       {
         var parts = part.split("=");
-        var filterPart = ["all",["==", parts[0], parts[1]]]
+        if (parts[1].includes(","))
+        {
+          parts[1] = parts[1].split(",");
+        }
+
+        var filterPart = ["match",["get", parts[0]],parts[1],true,false]
         filterArray.push(filterPart);
       }
       else
