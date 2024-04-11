@@ -1,3 +1,9 @@
+  function setMapFilter(filterString) {
+    var filterTextBox = document.getElementById("filterTextBox");
+    filterTextBox.value = filterString;
+    filterMap();
+  }
+  
   function filterMap() {
     var filterTextBox = document.getElementById("filterTextBox");
     var filterText = filterTextBox.value;
@@ -84,8 +90,17 @@
     // modify the map layers
     window.tigerMap.setFilter("allFeatures", null);
     window.tigerMap.setFilter("allFeatures-node", null);
-  
-    window.tigerMap.setLayoutProperty("allFeatures", "visibility", "visible");
-    window.tigerMap.setLayoutProperty("allFeatures-node", "visibility", "visible");
+
+    var filterTextBox = document.getElementById("filterTextBox");
+    filterTextBox.value = "";
+
+    // clear filter example radio buttons
+    var radioButtonNames = ["benchBackrestRadio","bicycleRepairRadio","pitchLitRadio","pitchSportRadio","addrStreetRadio","buildingTypeRadio","busShelterRadio","desctiptiveNameRadio"];
+
+    for (buttonName in radioButtonNames)
+    {
+      var radio = document.getElementById(buttonName);
+      radio.checked = false;
+    }
   }
   

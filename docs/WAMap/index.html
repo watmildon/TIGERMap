@@ -120,6 +120,99 @@
             </a>
           </div>
           
+          <div class="btn-group my-2 my-md-0" role="group" aria-label="Basic outlined example">
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                Example filters
+              </button>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="dropdown-item d-flex flex-row align-items-center">
+                    <input class="form-check-input me-1" name="filterSuggestions" type="radio" id="benchBackrestRadio" onclick="setMapFilter('amenity=bench;!backrest')">
+                    <label class="form-check-label user-select-none flex-fill" for="benchBackrestRadio">Does this bench have a backrest?</label>
+                    <a class="py-2 px-0 px-lg-2 link-info" href="https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dbench" target="_blank" rel="noopener">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                      </svg>
+                    </a>
+                  </div>
+                  <div class="dropdown-item d-flex flex-row align-items-center">
+                    <input class="form-check-input me-1" name="filterSuggestions" type="radio" id="bicycleRepairRadio" onclick="setMapFilter('shop=bicycle;!service:bicycle:repair')">
+                    <label class="form-check-label user-select-none flex-fill" for="bicycleRepairRadio">Are bicycle repair services offered here?</label>
+                    <a class="py-2 px-0 px-lg-2 link-info" href="https://wiki.openstreetmap.org/wiki/Key:service:bicycle:repair" target="_blank" rel="noopener">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                      </svg>
+                    </a>
+                  </div>
+                  <div class="dropdown-item d-flex flex-row align-items-center">
+                    <input class="form-check-input me-1" name="filterSuggestions" type="radio" id="pitchLitRadio" onclick="setMapFilter('leisure=pitch;access!=private;!lit')">
+                    <label class="form-check-label user-select-none flex-fill" for="pitchLitRadio">Is this pitch lit?</label>
+                    <a class="py-2 px-0 px-lg-2 link-info" href="https://wiki.openstreetmap.org/wiki/Tag:leisure%3Dpitch" target="_blank" rel="noopener">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                      </svg>
+                    </a>
+                  </div>
+                  <div class="dropdown-item d-flex flex-row align-items-center">
+                    <input class="form-check-input me-1" name="filterSuggestions" type="radio" id="pitchSportRadio" onclick="setMapFilter('leisure=pitch;!sport')">
+                    <label class="form-check-label user-select-none flex-fill" for="pitchSportRadio">What sport is played here?</label>
+                    <a class="py-2 px-0 px-lg-2 link-info" href="https://wiki.openstreetmap.org/wiki/Tag:leisure%3Dpitch" target="_blank" rel="noopener">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                      </svg>
+                    </a>
+                  </div>
+                  <div class="dropdown-item d-flex flex-row align-items-center">
+                    <input class="form-check-input me-1" name="filterSuggestions" type="radio" id="addrStreetRadio" onclick="setMapFilter('addr:housenumber;!addr:street')">
+                    <label class="form-check-label user-select-none flex-fill" for="addrStreetRadio">What street is this on?</label>
+                    <a class="py-2 px-0 px-lg-2 link-info" href="https://wiki.openstreetmap.org/wiki/Key:addr:street" target="_blank" rel="noopener">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                      </svg>
+                    </a>
+                  </div>
+                  <div class="dropdown-item d-flex flex-row align-items-center">
+                    <input class="form-check-input me-1" name="filterSuggestions" type="radio" id="buildingTypeRadio" onclick="setMapFilter('building=yes')">
+                    <label class="form-check-label user-select-none flex-fill" for="buildingTypeRadio">What kind of building is this?</label>
+                    <a class="py-2 px-0 px-lg-2 link-info" href="https://wiki.openstreetmap.org/wiki/Key:building#Values" target="_blank" rel="noopener">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                      </svg>
+                    </a>
+                  </div>
+                  <div class="dropdown-item d-flex flex-row align-items-center">
+                    <input class="form-check-input me-1" name="filterSuggestions" type="radio" id="busShelterRadio" onclick="setMapFilter('highway=bus_stop;!shelter')">
+                    <label class="form-check-label user-select-none flex-fill" for="busShelterRadio">Does this bus stop have a shelter?</label>
+                    <a class="py-2 px-0 px-lg-2 link-info" href="https://wiki.openstreetmap.org/wiki/Tag:highway%3Dbus_stop" target="_blank" rel="noopener">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                      </svg>
+                    </a>
+                  </div>
+                  <div class="dropdown-item d-flex flex-row align-items-center">
+                    <input class="form-check-input me-1" name="filterSuggestions" type="radio" id="desctiptiveNameRadio" onclick="setMapFilter('name=House,house,Swimming Pool,Bench,Soccer Field')">
+                    <label class="form-check-label user-select-none flex-fill" for="desctiptiveNameRadio">Is this a descriptive name?</label>
+                    <a class="py-2 px-0 px-lg-2 link-info" href="https://wiki.openstreetmap.org/wiki/Names#Names_are_not_for_descriptions" target="_blank" rel="noopener">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                      </svg>
+                    </a>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+
           <div class="input-group mx-2 my-2" style="width: 100%; min-width:150px; max-width:670px;">            
             <input type="text" class="form-control" placeholder="filter" id="filterTextBox" data-bs-html="true" title="<b>Try these:</b><br/>highway<br/>aerialway<br/>highway;surface=asphalt,paved<br/>highway;!surface<br/>leisure=park;sport=tennis,soccer;lit=yes;access!=private<br/>" data-bs-toggle="tooltip" data-placement="bottom" data-html="true" aria-label="filter" aria-describedby="basic-addon1">
             <div class="input-group-append">
