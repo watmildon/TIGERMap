@@ -77,6 +77,7 @@ document.addEventListener("alpine:init", async () => {
       return html;
     }
     const html = `<div class="inspect-popup">${e.features.map(feature2html).join("<br>")}</div>`;
+
     const popup = new maplibregl.Popup()
           .setLngLat(e.lngLat)
           .setHTML(html)
@@ -89,7 +90,7 @@ document.addEventListener("alpine:init", async () => {
   map.on("mouseenter", "allFeatures-node", onEnter);
   map.on("mouseleave", "allFeatures-node", onLeave);
   map.on("click", "allFeatures-node", onClick);
-
+  map.showTileBoundaries = false;
   window.tigerMap = map;
 
   const url = new URL(window.location.href);
