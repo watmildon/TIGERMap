@@ -48,6 +48,8 @@ function updateMapLayers(checkboxId, layerName) {
     // "filter": ["match", ["get", "surface"], ["paved", "asphalt"], true, false]
     // surface!=paved,asphalt
     // "filter": ["match", ["get", "surface"], ["paved", "asphalt"], false, true]
+    //
+    // Filter doc: https://maplibre.org/maplibre-style-spec/expressions
 
     filterText = filterText.replace("=*",""); // convert key=* to key
 
@@ -104,5 +106,7 @@ function updateMapLayers(checkboxId, layerName) {
     window.tigerMap.setFilter("tigerReview", null);
   
     window.tigerMap.setLayoutProperty("tigerReview", "visibility", "visible");
+    var filterTextBox = document.getElementById("filterTextBox");
+    filterTextBox.value = "";
   }
   
