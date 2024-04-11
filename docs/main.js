@@ -81,7 +81,7 @@ function updateMapLayers(checkboxId, layerName) {
       {
         if (part[0] === "!")
         {
-          filterArray.push(["!has", part.substring(1)]);
+          filterArray.push(['!',["has", part.substring(1)]]);
         }
         else
         {
