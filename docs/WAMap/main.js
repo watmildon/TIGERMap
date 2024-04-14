@@ -45,6 +45,12 @@ function addColorProperty(propertyToColor)
       'line-color',
       paintStyle
   );
+
+  map.setPaintProperty (
+    'allFeatures-node',
+    'circle-color',
+    paintStyle
+);
 };
 
 
