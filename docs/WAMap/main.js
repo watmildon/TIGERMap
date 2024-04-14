@@ -92,6 +92,9 @@ function computeColor(value) {
       addColorProperty(filterText.replace("(color)",""))
       return;
     }
+    map.setPaintProperty ('allFeatures','line-color','#000000');
+    map.setPaintProperty ('allFeatures-node','circle-color','#000000');
+    map.setPaintProperty('osmcarto','raster-saturation',0)
 
     if (filterText === "") {
       clearFilter();
