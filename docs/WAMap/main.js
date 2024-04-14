@@ -1,3 +1,15 @@
+function updateMapOnScroll()
+{
+    var filterTextBox = document.getElementById("filterTextBox");
+    var filterText = filterTextBox.value;
+
+    if (filterText.startsWith("(color)"))
+    {
+      addColorProperty(filterText.replace("(color)",""))
+      return;
+    }
+}
+
 function addColorProperty(propertyToColor)
 {
   const featuresInBoundingBox = window.tigerMap.queryRenderedFeatures();
@@ -169,7 +181,7 @@ function computeColor(value) {
     filterTextBox.value = "";
 
     // clear filter example radio buttons
-    var radioButtonNames = ["benchBackrestRadio","bicycleRepairRadio","pitchLitRadio","pitchSportRadio","addrStreetRadio","buildingTypeRadio","busShelterRadio","restaurantTakeoutRadio"];
+    var radioButtonNames = ["benchBackrestRadio","bicycleRepairRadio","pitchLitRadio","pitchSportRadio","addrStreetRadio","buildingTypeRadio","busShelterRadio","restaurantTakeoutRadio","colorExploreRadio"];
 
     for (const buttonName of radioButtonNames)
     {

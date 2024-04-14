@@ -90,6 +90,7 @@ document.addEventListener("alpine:init", async () => {
   map.on("mouseenter", "allFeatures-node", onEnter);
   map.on("mouseleave", "allFeatures-node", onLeave);
   map.on("click", "allFeatures-node", onClick);
+  map.on("moveend", function() {updateMapOnScroll();})
   map.showTileBoundaries = false;
   window.tigerMap = map;
 
