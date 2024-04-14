@@ -170,10 +170,17 @@ function computeColor(value) {
     // clear filter example radio buttons
     var radioButtonNames = ["benchBackrestRadio","bicycleRepairRadio","pitchLitRadio","pitchSportRadio","addrStreetRadio","buildingTypeRadio","busShelterRadio","restaurantTakeoutRadio"];
 
-    for (buttonName in radioButtonNames)
+    for (const buttonName of radioButtonNames)
     {
       var radio = document.getElementById(buttonName);
       radio.checked = false;
     }
+
+    //paint: {
+    //  "line-color": "#000000",
+    //  "line-width": 2,
+    //},
+    map.setPaintProperty ('allFeatures','line-color','#000000');
+    map.setPaintProperty ('allFeatures-node','circle-color','#000000');
   }
   
