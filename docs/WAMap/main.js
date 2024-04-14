@@ -2,6 +2,7 @@ function addColorProperty(propertyToColor)
 {
   const featuresInBoundingBox = window.tigerMap.queryRenderedFeatures();
 
+  window.map.setPaintProperty('osmcarto','raster-saturation',-1)
   // The eventual filter will look something like:
   //  "line-color": [
   //    "match",
@@ -182,5 +183,6 @@ function computeColor(value) {
     //},
     map.setPaintProperty ('allFeatures','line-color','#000000');
     map.setPaintProperty ('allFeatures-node','circle-color','#000000');
+    map.setPaintProperty('osmcarto','raster-saturation',0)
   }
   
