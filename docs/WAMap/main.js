@@ -168,7 +168,7 @@ function computeColor(value) {
     filterTextBox.value = "";
 
     // clear filter example radio buttons
-    var radioButtonNames = ["benchBackrestRadio","bicycleRepairRadio","pitchLitRadio","pitchSportRadio","addrStreetRadio","buildingTypeRadio","busShelterRadio","desctiptiveNameRadio"];
+    var radioButtonNames = ["benchBackrestRadio","bicycleRepairRadio","pitchLitRadio","pitchSportRadio","addrStreetRadio","buildingTypeRadio","busShelterRadio","restaurantTakeoutRadio"];
 
     for (buttonName in radioButtonNames)
     {
