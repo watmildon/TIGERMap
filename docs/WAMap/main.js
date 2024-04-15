@@ -1,7 +1,20 @@
+function updateMapOnScroll()
+{
+    var filterTextBox = document.getElementById("filterTextBox");
+    var filterText = filterTextBox.value;
+
+    if (filterText.startsWith("(color)"))
+    {
+      addColorProperty(filterText.replace("(color)",""))
+      return;
+    }
+}
+
 function addColorProperty(propertyToColor)
 {
   const featuresInBoundingBox = window.tigerMap.queryRenderedFeatures();
 
+  window.map.setPaintProperty('osmcarto','raster-saturation',-1)
   // The eventual filter will look something like:
   //  "line-color": [
   //    "match",
@@ -45,6 +58,12 @@ function addColorProperty(propertyToColor)
       'line-color',
       paintStyle
   );
+
+  map.setPaintProperty (
+    'allFeatures-node',
+    'circle-color',
+    paintStyle
+);
 };
 
 
@@ -73,6 +92,9 @@ function computeColor(value) {
       addColorProperty(filterText.replace("(color)",""))
       return;
     }
+    map.setPaintProperty ('allFeatures','line-color','#000000');
+    map.setPaintProperty ('allFeatures-node','circle-color','#000000');
+    map.setPaintProperty('osmcarto','raster-saturation',0)
 
     if (filterText === "") {
       clearFilter();
@@ -162,12 +184,20 @@ function computeColor(value) {
     filterTextBox.value = "";
 
     // clear filter example radio buttons
-    var radioButtonNames = ["benchBackrestRadio","bicycleRepairRadio","pitchLitRadio","pitchSportRadio","addrStreetRadio","buildingTypeRadio","busShelterRadio","desctiptiveNameRadio"];
+    var radioButtonNames = ["benchBackrestRadio","bicycleRepairRadio","pitchLitRadio","pitchSportRadio","addrStreetRadio","buildingTypeRadio","busShelterRadio","restaurantTakeoutRadio","separateSidewalkRadio","colorExploreRadio"];
 
-    for (buttonName in radioButtonNames)
+    for (const buttonName of radioButtonNames)
     {
       var radio = document.getElementById(buttonName);
       radio.checked = false;
     }
+
+    //paint: {
+    //  "line-color": "#000000",
+    //  "line-width": 2,
+    //},
+    map.setPaintProperty ('allFeatures','line-color','#000000');
+    map.setPaintProperty ('allFeatures-node','circle-color','#000000');
+    map.setPaintProperty('osmcarto','raster-saturation',0)
   }
   
