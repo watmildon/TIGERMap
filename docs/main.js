@@ -91,6 +91,7 @@ function updateMapLayers(checkboxId, layerName) {
         }
       }
     }
+    window.tigerMap.setFilter("tigerReview", filterArray)
   }
   
   function clearFilter() {
