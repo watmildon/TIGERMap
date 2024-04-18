@@ -1,0 +1,294 @@
+<!doctype html>
+<html lang="en" data-bs-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, minimum-scale=1, maximum-scale=1, shrink-to-fit=no, viewport-fit=cover">
+    <title>WAMap</title>
+    <meta
+      name="description"
+      content="Filterable OSM data of WA"
+    />
+
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="../style.css" />
+    <link rel="stylesheet" href="../maplibre-gl-2.4.0.css" />
+    <script src="../maplibre-gl-2.4.0.js"></script>
+    <script src="../pmtiles-2.7.1.js"></script>
+    <script src="../alpine-3.12.3.js" defer></script>
+    <script src="./mapstyle.js"></script>
+    <script src="./setup.js"></script>
+    <script src="./main.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="icon" href="favicon.svg">
+  </head>
+
+  <body>
+    <nav class="navbar navbar-expand-md bg-body fixed-top">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+          🍎 WAMap
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+          
+          <div class="btn-group my-2 my-md-0 me-2" role="group" aria-label="Button group with nested dropdown">
+            <div class="btn-group" role="group" x-data>
+              <a class="btn btn-outline-primary"
+                    @click.prevent="let url = `https://www.openstreetmap.org/edit?editor=id#&source=${encodeURIComponent(location.href)}&hashtags=${encodeURIComponent('#WAMap')}&map=${Math.round(map.getZoom())}/${map.getBounds().getCenter().lat}/${map.getBounds().getCenter().lng}`;
+                  window.open(url);"
+                    @auxclick.prevent="let url = `https://www.openstreetmap.org/edit?editor=id#&source=${encodeURIComponent(location.href)}&hashtags=${encodeURIComponent('#WAMap')}&map=${Math.round(map.getZoom())}/${map.getBounds().getCenter().lat}/${map.getBounds().getCenter().lng}`;
+                  window.open(url);"
+                  >
+                    Edit
+              </a>
+              <button type="button" class="btn btn-outline-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="visually-hidden">Toggle Dropdown</span>
+              </button>
+              <ul class="dropdown-menu">
+                <li id="open_in_id" x-data>
+                  <a
+                    class="dropdown-item"
+                    @click.prevent="let url = `https://www.openstreetmap.org/edit?editor=id#&source=${encodeURIComponent(location.href)}&hashtags=${encodeURIComponent('#WAMap')}&map=${Math.round(map.getZoom())}/${map.getBounds().getCenter().lat}/${map.getBounds().getCenter().lng}`;
+                  window.open(url);"
+                    @auxclick.prevent="let url = `https://www.openstreetmap.org/edit?editor=id#&source=${encodeURIComponent(location.href)}&hashtags=${encodeURIComponent('#WAMap')}&map=${Math.round(map.getZoom())}/${map.getBounds().getCenter().lat}/${map.getBounds().getCenter().lng}`;
+                  window.open(url);"
+                  >
+                    Edit with iD
+                  </a>
+                </li>
+                <li id="open_in_rapid" x-data>
+                  <a
+                    class="dropdown-item"
+                    @click.prevent="let url = `https://rapideditor.org/rapid#&source=${encodeURIComponent(location.href)}&datasets=e75b56f13b404d7d8b47ef8be1c619ec&hashtags=${encodeURIComponent('#WAMap')}&map=${Math.round(map.getZoom())}/${map.getBounds().getCenter().lat}/${map.getBounds().getCenter().lng}`;
+                  window.open(url);"
+                    @auxclick.prevent="let url = `https://rapideditor.org/rapid#&source=${encodeURIComponent(location.href)}&datasets=e75b56f13b404d7d8b47ef8be1c619ec&hashtags=${encodeURIComponent('#WAMap')}&map=${Math.round(map.getZoom())}/${map.getBounds().getCenter().lat}/${map.getBounds().getCenter().lng}`;
+                  window.open(url);"
+                  >
+                    Edit with Rapid
+                  </a>
+                </li>
+
+                <li><hr class="dropdown-divider"></li>
+                <li id="open_in_josm" x-data="{show_josm_not_running: false}">
+                  <a
+                    class="dropdown-item"
+                    @click="let b = map.getBounds();
+                      let url = `http://127.0.0.1:8111/load_and_zoom?top=${b.getNorth()}&amp;bottom=${b.getSouth()}&amp;left=${b.getWest()}&amp;right=${b.getEast()}&amp;changeset_source=${encodeURIComponent(location.href)}&amp;changeset_hashtags=${encodeURIComponent('#WAMap')}`;
+                      let res_ok = await fetch(url).then(r => r.ok).catch(e => false);
+                      this.disabled = false;
+                      if (!res_ok) {
+                        show_josm_not_running = true;
+                        setTimeout(() => show_josm_not_running=false, 5000);
+                      }"
+                  >
+                  Edit with JOSM</a>
+                  <span x-transition x-show="show_josm_not_running">JOSM isn't running…</span>
+                </li>
+                <li id="open_in_josm_new_layer" x-data="{show_josm_not_running: false}">
+                  <a
+                    class="dropdown-item"
+                    @click="let b = map.getBounds();
+                      let url = `http://127.0.0.1:8111/load_and_zoom?new_layer=true&top=${b.getNorth()}&amp;bottom=${b.getSouth()}&amp;left=${b.getWest()}&amp;right=${b.getEast()}&amp;changeset_source=${encodeURIComponent(location.href)}&amp;changeset_hashtags=${encodeURIComponent('#WAMap')}`;
+                      let res_ok = await fetch(url).then(r => r.ok).catch(e => false);
+                      this.disabled = false;
+                      if (!res_ok) {
+                        show_josm_not_running = true;
+                        setTimeout(() => show_josm_not_running=false, 5000);
+                      }"
+                    >
+                  Edit with JOSM (New layer)</a>
+                  <span x-transition x-show="show_josm_not_running">JOSM isn't running…</span>
+                </li>
+                
+              </ul>
+            </div>
+            <a
+              id="view_on_osm"
+              class="btn btn-outline-primary text-nowrap"
+              x-data
+              href="#"
+              class="inline_centre"
+              target="_blank"
+              @click.prevent="let url = `https://www.openstreetmap.org/#map=${Math.round(map.getZoom())}/${map.getBounds().getCenter().lat}/${map.getBounds().getCenter().lng}`; window.open(url);"
+              @auxclick.prevent="let url = `https://www.openstreetmap.org/#map=${Math.round(map.getZoom())}/${map.getBounds().getCenter().lat}/${map.getBounds().getCenter().lng}`; window.open(url);"
+            >
+              View in OSM
+            </a>
+          </div>
+          
+          <div class="btn-group my-2 my-md-0" role="group" aria-label="Basic outlined example">
+            <div class="btn-group" role="group">
+              <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                Example filters
+              </button>
+              <ul class="dropdown-menu">
+                <li>
+                  <div class="dropdown-item d-flex flex-row align-items-center">
+                    <input class="form-check-input me-1" name="filterSuggestions" type="radio" id="benchBackrestRadio" onclick="setMapFilter('amenity=bench;!backrest')">
+                    <label class="form-check-label user-select-none flex-fill" for="benchBackrestRadio">Does this bench have a backrest?</label>
+                    <a class="py-2 px-0 px-lg-2 link-info" href="https://wiki.openstreetmap.org/wiki/Tag:amenity%3Dbench" target="_blank" rel="noopener">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                      </svg>
+                    </a>
+                  </div>
+                  <div class="dropdown-item d-flex flex-row align-items-center">
+                    <input class="form-check-input me-1" name="filterSuggestions" type="radio" id="bicycleRepairRadio" onclick="setMapFilter('shop=bicycle;!service:bicycle:repair')">
+                    <label class="form-check-label user-select-none flex-fill" for="bicycleRepairRadio">Are bicycle repair services offered here?</label>
+                    <a class="py-2 px-0 px-lg-2 link-info" href="https://wiki.openstreetmap.org/wiki/Key:service:bicycle:repair" target="_blank" rel="noopener">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                      </svg>
+                    </a>
+                  </div>
+                  <div class="dropdown-item d-flex flex-row align-items-center">
+                    <input class="form-check-input me-1" name="filterSuggestions" type="radio" id="pitchLitRadio" onclick="setMapFilter('leisure=pitch;access!=private;!lit')">
+                    <label class="form-check-label user-select-none flex-fill" for="pitchLitRadio">Is this pitch lit?</label>
+                    <a class="py-2 px-0 px-lg-2 link-info" href="https://wiki.openstreetmap.org/wiki/Tag:leisure%3Dpitch" target="_blank" rel="noopener">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                      </svg>
+                    </a>
+                  </div>
+                  <div class="dropdown-item d-flex flex-row align-items-center">
+                    <input class="form-check-input me-1" name="filterSuggestions" type="radio" id="pitchSportRadio" onclick="setMapFilter('leisure=pitch;!sport')">
+                    <label class="form-check-label user-select-none flex-fill" for="pitchSportRadio">What sport is played here?</label>
+                    <a class="py-2 px-0 px-lg-2 link-info" href="https://wiki.openstreetmap.org/wiki/Tag:leisure%3Dpitch" target="_blank" rel="noopener">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                      </svg>
+                    </a>
+                  </div>
+                  <div class="dropdown-item d-flex flex-row align-items-center">
+                    <input class="form-check-input me-1" name="filterSuggestions" type="radio" id="addrStreetRadio" onclick="setMapFilter('addr:housenumber;!addr:street')">
+                    <label class="form-check-label user-select-none flex-fill" for="addrStreetRadio">What street is this on?</label>
+                    <a class="py-2 px-0 px-lg-2 link-info" href="https://wiki.openstreetmap.org/wiki/Key:addr:street" target="_blank" rel="noopener">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                      </svg>
+                    </a>
+                  </div>
+                  <div class="dropdown-item d-flex flex-row align-items-center">
+                    <input class="form-check-input me-1" name="filterSuggestions" type="radio" id="buildingTypeRadio" onclick="setMapFilter('building=yes')">
+                    <label class="form-check-label user-select-none flex-fill" for="buildingTypeRadio">What kind of building is this?</label>
+                    <a class="py-2 px-0 px-lg-2 link-info" href="https://wiki.openstreetmap.org/wiki/Key:building#Values" target="_blank" rel="noopener">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                      </svg>
+                    </a>
+                  </div>
+                  <div class="dropdown-item d-flex flex-row align-items-center">
+                    <input class="form-check-input me-1" name="filterSuggestions" type="radio" id="busShelterRadio" onclick="setMapFilter('highway=bus_stop;!shelter')">
+                    <label class="form-check-label user-select-none flex-fill" for="busShelterRadio">Does this bus stop have a shelter?</label>
+                    <a class="py-2 px-0 px-lg-2 link-info" href="https://wiki.openstreetmap.org/wiki/Tag:highway%3Dbus_stop" target="_blank" rel="noopener">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                      </svg>
+                    </a>
+                  </div>
+                  <div class="dropdown-item d-flex flex-row align-items-center">
+                    <input class="form-check-input me-1" name="filterSuggestions" type="radio" id="restaurantTakeoutRadio" onclick="setMapFilter('cuisine;!takeout;website')">
+                    <label class="form-check-label user-select-none flex-fill" for="restaurantTakeoutRadio">Do these places offer takeout?</label>
+                    <a class="py-2 px-0 px-lg-2 link-info" href="https://wiki.openstreetmap.org/wiki/Key:takeaway" target="_blank" rel="noopener">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                      </svg>
+                    </a>
+                  </div>
+                  <div class="dropdown-item d-flex flex-row align-items-center">
+                    <input class="form-check-input me-1" name="filterSuggestions" type="radio" id="separateSidewalkRadio" onclick="setMapFilter('highway;highway!=footway;!sidewalk;!sidewalk;!sidewalk:left;!sidewalk:right;!sidewalk:both')">
+                    <label class="form-check-label user-select-none flex-fill" for="separateSidewalkRadio">Does this road have separately mapped sidewalks?</label>
+                    <a class="py-2 px-0 px-lg-2 link-info" href="https://wiki.openstreetmap.org/wiki/Key:sidewalk" target="_blank" rel="noopener">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                      </svg>
+                    </a>
+                  </div>
+                  <div class="dropdown-item d-flex flex-row align-items-center">
+                    <input class="form-check-input me-1" name="filterSuggestions" type="radio" id="colorExploreRadio" onclick="setMapFilter('(color)highway')">
+                    <label class="form-check-label user-select-none flex-fill" for="colorExploreRadio">BETA: Explore a tag using color!</label>
+                    <a class="py-2 px-0 px-lg-2 link-info" href="hhttps://wiki.openstreetmap.org/wiki/Key:highway" target="_blank" rel="noopener">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                        <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>
+                        <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>
+                      </svg>
+                    </a>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+
+          <div class="input-group mx-2 my-2" style="width: 100%; min-width:150px; max-width:670px;">            
+            <input type="text" class="form-control" placeholder="filter" id="filterTextBox" data-bs-html="true" title="<b>Try these:</b><br/>highway<br/>aerialway<br/>highway;surface=asphalt,paved<br/>highway;!surface<br/>leisure=park;sport=tennis,soccer;lit=yes;access!=private<br/>" data-bs-toggle="tooltip" data-placement="bottom" data-html="true" aria-label="filter" aria-describedby="basic-addon1">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" style="border-radius: 0" type="button" id="filterButton" onclick="filterMap()">Filter</button>
+            </div>
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" style="border-radius: 0 6px 6px 0" type="button" id="clearButton" onclick="clearFilter()">Clear</button>
+            </div>
+          </div>
+
+          <hr class="d-lg-none">
+          <ul class="navbar-nav flex-row flex-wrap ms-md-auto d-sm-flex d-md-none d-lg-flex" style="min-width:150px">
+            <li class="nav-item col-6 col-lg-auto">
+              <a class="nav-link" href="https://wiki.openstreetmap.org/wiki/Key:tiger:reviewed">About</a>
+            </li>
+            <li class="nav-item py-2 py-lg-1 col-12 col-lg-auto">
+              <div class="vr d-none d-lg-flex h-100 mx-lg-2"></div>
+              <hr class="d-lg-none my-2">
+            </li>
+            <li class="nav-item col-6 col-lg-auto">
+              <a class="nav-link py-2 px-0 px-lg-2" href="https://github.com/watmildon/TIGERMap" target="_blank" rel="noopener">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="navbar-nav-svg" viewBox="0 0 512 499.36" role="img"><title>GitHub</title><path fill="currentColor" fill-rule="evenodd" d="M256 0C114.64 0 0 114.61 0 256c0 113.09 73.34 209 175.08 242.9 12.8 2.35 17.47-5.56 17.47-12.34 0-6.08-.22-22.18-.35-43.54-71.2 15.49-86.2-34.34-86.2-34.34-11.64-29.57-28.42-37.45-28.42-37.45-23.27-15.84 1.73-15.55 1.73-15.55 25.69 1.81 39.21 26.38 39.21 26.38 22.84 39.12 59.92 27.82 74.5 21.27 2.33-16.54 8.94-27.82 16.25-34.22-56.84-6.43-116.6-28.43-116.6-126.49 0-27.95 10-50.8 26.35-68.69-2.63-6.48-11.42-32.5 2.51-67.75 0 0 21.49-6.88 70.4 26.24a242.65 242.65 0 0 1 128.18 0c48.87-33.13 70.33-26.24 70.33-26.24 14 35.25 5.18 61.27 2.55 67.75 16.41 17.9 26.31 40.75 26.31 68.69 0 98.35-59.85 120-116.88 126.32 9.19 7.9 17.38 23.53 17.38 47.41 0 34.22-.31 61.83-.31 70.23 0 6.85 4.61 14.81 17.6 12.31C438.72 464.97 512 369.08 512 256.02 512 114.62 397.37 0 256 0z"/></svg>
+                <small class="d-lg-none ms-2">GitHub</small>
+              </a>
+            </li>
+            <li class="nav-item col-6 col-lg-auto">
+              <a class="nav-link py-2 px-0 px-lg-2" href="https://en.osm.town/@watmildon" target="_blank" rel="noopener">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="navbar-nav-svg" viewBox="0 0 16 16" role="img"><title>Mastodon</title><path fill="currentColor" d="M11.19 12.195c2.016-.24 3.77-1.475 3.99-2.603.348-1.778.32-4.339.32-4.339 0-3.47-2.286-4.488-2.286-4.488C12.062.238 10.083.017 8.027 0h-.05C5.92.017 3.942.238 2.79.765c0 0-2.285 1.017-2.285 4.488l-.002.662c-.004.64-.007 1.35.011 2.091.083 3.394.626 6.74 3.78 7.57 1.454.383 2.703.463 3.709.408 1.823-.1 2.847-.647 2.847-.647l-.06-1.317s-1.303.41-2.767.36c-1.45-.05-2.98-.156-3.215-1.928a4 4 0 0 1-.033-.496s1.424.346 3.228.428c1.103.05 2.137-.064 3.188-.189zm1.613-2.47H11.13v-4.08c0-.859-.364-1.295-1.091-1.295-.804 0-1.207.517-1.207 1.541v2.233H7.168V5.89c0-1.024-.403-1.541-1.207-1.541-.727 0-1.091.436-1.091 1.296v4.079H3.197V5.522q0-1.288.66-2.046c.456-.505 1.052-.764 1.793-.764.856 0 1.504.328 1.933.983L8 4.39l.417-.695c.429-.655 1.077-.983 1.934-.983.74 0 1.336.259 1.791.764q.662.757.661 2.046z"/></svg>
+                <small class="d-lg-none ms-2">Mastodon</small>
+              </a>
+            </li>
+          </ul>
+
+          <div class="navbar-nav btn-group ms-auto d-none d-md-flex d-lg-none" role="group">
+            <button type="button" class="btn btn-outline-secondary dropdown-toggle nav-link border-0 text-secondary bg-transparent" data-bs-toggle="dropdown" aria-expanded="false">
+              More
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="https://github.com/watmildon/TIGERMap">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="navbar-nav-svg" viewBox="0 0 512 499.36" role="img"><title>GitHub</title><path fill="currentColor" fill-rule="evenodd" d="M256 0C114.64 0 0 114.61 0 256c0 113.09 73.34 209 175.08 242.9 12.8 2.35 17.47-5.56 17.47-12.34 0-6.08-.22-22.18-.35-43.54-71.2 15.49-86.2-34.34-86.2-34.34-11.64-29.57-28.42-37.45-28.42-37.45-23.27-15.84 1.73-15.55 1.73-15.55 25.69 1.81 39.21 26.38 39.21 26.38 22.84 39.12 59.92 27.82 74.5 21.27 2.33-16.54 8.94-27.82 16.25-34.22-56.84-6.43-116.6-28.43-116.6-126.49 0-27.95 10-50.8 26.35-68.69-2.63-6.48-11.42-32.5 2.51-67.75 0 0 21.49-6.88 70.4 26.24a242.65 242.65 0 0 1 128.18 0c48.87-33.13 70.33-26.24 70.33-26.24 14 35.25 5.18 61.27 2.55 67.75 16.41 17.9 26.31 40.75 26.31 68.69 0 98.35-59.85 120-116.88 126.32 9.19 7.9 17.38 23.53 17.38 47.41 0 34.22-.31 61.83-.31 70.23 0 6.85 4.61 14.81 17.6 12.31C438.72 464.97 512 369.08 512 256.02 512 114.62 397.37 0 256 0z"/></svg>
+                <span>GitHub</span>
+              </a></li>
+              <li><a class="dropdown-item" href="https://en.osm.town/@watmildon">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" class="navbar-nav-svg" viewBox="0 0 16 16" role="img"><title>Mastodon</title><path fill="currentColor" d="M11.19 12.195c2.016-.24 3.77-1.475 3.99-2.603.348-1.778.32-4.339.32-4.339 0-3.47-2.286-4.488-2.286-4.488C12.062.238 10.083.017 8.027 0h-.05C5.92.017 3.942.238 2.79.765c0 0-2.285 1.017-2.285 4.488l-.002.662c-.004.64-.007 1.35.011 2.091.083 3.394.626 6.74 3.78 7.57 1.454.383 2.703.463 3.709.408 1.823-.1 2.847-.647 2.847-.647l-.06-1.317s-1.303.41-2.767.36c-1.45-.05-2.98-.156-3.215-1.928a4 4 0 0 1-.033-.496s1.424.346 3.228.428c1.103.05 2.137-.064 3.188-.189zm1.613-2.47H11.13v-4.08c0-.859-.364-1.295-1.091-1.295-.804 0-1.207.517-1.207 1.541v2.233H7.168V5.89c0-1.024-.403-1.541-1.207-1.541-.727 0-1.091.436-1.091 1.296v4.079H3.197V5.522q0-1.288.66-2.046c.456-.505 1.052-.764 1.793-.764.856 0 1.504.328 1.933.983L8 4.39l.417-.695c.429-.655 1.077-.983 1.934-.983.74 0 1.336.259 1.791.764q.662.757.661 2.046z"/></svg>
+                <span>Mastodon</span>
+              </a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <main>
+      <div id="map"></div>
+    </main>
+
+  </body>
+</html>
