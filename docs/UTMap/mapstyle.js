@@ -16,7 +16,7 @@ var mapstyle_layers = [
       "line-join": "round",
       "visibility": "visible"
     },
-    source: "WAMap",
+    source: "UTMap",
     "source-layer": "allFeatures",
   },
   {
@@ -29,7 +29,7 @@ var mapstyle_layers = [
     "layout": {
       "visibility": "visible"
     },
-    source: "WAMap",
+    source: "UTMap",
     "source-layer": "allFeatures",
     filter: ["==","$type","Point"]
   },

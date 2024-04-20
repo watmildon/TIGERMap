@@ -15,17 +15,17 @@ document.addEventListener("alpine:init", async () => {
 
   map = new maplibregl.Map({
     container: "map",
-    zoom: 7,
+    zoom: 6.5,
     hash: "map",
-    center: [-120.6, 47.4],
+    center: [-111.1, 39.5],
     style: {
       version: 8,
       layers: mapstyle_layers,
       glyphs: "./font/{fontstack}/{range}.pbf",
       sources: {
-        WAMap: {
+        UTMap: {
           type: "vector",
-          url: "pmtiles://" + url_prefix + "washington-latest.pmtiles",
+          url: "pmtiles://" + url_prefix + "utah-latest.pmtiles",
           attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
         },
         osmcarto: {
