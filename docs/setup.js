@@ -43,6 +43,11 @@ document.addEventListener("alpine:init", async () => {
           url: "pmtiles://" + url_prefix + "NAD_r15.pmtiles",
           attribution: "© Public Domain, USDOT",
         },
+        counties: {
+          type: "vector",
+          url: "pmtiles://" + url_prefix + "AllUSCounties.pmtiles",
+          attribution: "© Public Domain, USDOT",
+        },
         osmcarto: {
           type: "raster",
           tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],

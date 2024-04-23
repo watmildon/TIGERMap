@@ -93,6 +93,21 @@ var mapstyle_layers = [
     "source-layer": "NAD",
   },
   {
+    id: "counties",
+    type: "line",
+    paint: {
+      "line-color": "#4b0082",
+      "line-width": 2,
+    },
+    "layout": {
+      "line-cap": "round",
+      "line-join": "round",
+      "visibility": "none"
+    },
+    source: "counties",
+    "source-layer": "counties",
+  },
+  {
     id: "redlined",
     type: "line",
     paint: {
