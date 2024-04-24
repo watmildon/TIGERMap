@@ -65,7 +65,7 @@ function updateMapLayers(checkboxId, layerName) {
           parts[1] = parts[1].split(",");
         }
 
-        var filterPart = ["match",["get", parts[0]],parts[1],false,true]
+        var filterPart = ["match",["to-string",["get", parts[0]]],parts[1],false,true]
         filterArray.push(filterPart);
       }
       else if (part.includes("="))
@@ -76,7 +76,7 @@ function updateMapLayers(checkboxId, layerName) {
           parts[1] = parts[1].split(",");
         }
 
-        var filterPart = ["match",["get", parts[0]],parts[1],true,false]
+        var filterPart = ["match",["to-string",["get", parts[0]]],parts[1],true,false]
         filterArray.push(filterPart);
       }
       else
