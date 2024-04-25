@@ -71,8 +71,10 @@ function computeColor(value) {
   // generated using https://mokole.com/palette.html
   var goodColors = ["#191970","#006400","#ff4500","#ffd700","#00ff00","#0000FF","#b0e0e6","#ff1493","#4b0082","#8b4513"]
   let hash = 0;
-  for (let i = 0; i < value.length; i++) {
-    hash = (hash * 31 + value.charCodeAt(i)) & 0xfffffff; // Modulo to keep it within bounds
+  let str = value.toString();
+
+  for (let i = 0; i < str.length; i++) {
+    hash = (hash * 31 + str.charCodeAt(i)) & 0xfffffff; // Modulo to keep it within bounds
   }
   return goodColors[hash % goodColors.length]
 }
