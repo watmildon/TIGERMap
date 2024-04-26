@@ -20,7 +20,7 @@ fi
 
 if [ ! -s puerto-rico-latest.osm.pbf ] ; then
 	echo "No puerto-rico-latest.osm.pbf, downloading.."
-	curl -O https://download.geofabrik.de/north-america/puerto-rico-latest.osm.pbf
+	curl -O https://download.geofabrik.de/north-america/us/puerto-rico-latest.osm.pbf
 fi
 
 if [ ! -s washington-latest.osm.pbf ] ; then
