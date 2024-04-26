@@ -36,6 +36,16 @@ function updateMapLayers(checkboxId, layerName) {
     const newURL = `${window.location.pathname}?${newQueryString}${window.location.hash}`;
     window.history.replaceState({}, '', newURL);
   
+
+    // Add default tiger reviewed status to the filter set
+    // folks may wish to view other values of tiger:reviewed
+    // but the main layer should generally be "no"
+    // 
+    // This is kinda a hack imo but oh well
+    if (!filterText.includes("tiger:reviewed")) {
+      filterText = filterText.concat(";tiger:reviewed=no");
+    }
+
     // key1;key2;key3...
     // !key1;key2...
     // key1=value

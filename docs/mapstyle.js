@@ -34,7 +34,7 @@ var mapstyle_layers = [
     },
     source: "tiger",
     "source-layer": "highways",
-    "filter": ["all", ["==", "railway", "rail"]]
+    "filter": ["all", ["==", "railway", "rail"], ["==","tiger:reviewed","no"]]
   },
   {
     id: "tigerReview-pipeline",
@@ -50,7 +50,7 @@ var mapstyle_layers = [
     },
     source: "tiger",
     "source-layer": "highways",
-    "filter": ["all", ["==", "man_made", "pipeline"]]
+    "filter": ["all", ["==", "man_made", "pipeline"], ["==","tiger:reviewed","no"]]
   },
   {
     id: "streetaddress",

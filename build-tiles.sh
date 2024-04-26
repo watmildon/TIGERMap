@@ -40,10 +40,10 @@ pyosmium-up-to-date -v --server https://download.geofabrik.de/north-america/us/w
 pyosmium-up-to-date -v --server https://download.geofabrik.de/north-america/us/utah-updates/ -s 10000 utah-latest.osm.pbf
 
 # generate US and PR tiger files
-osmium tags-filter --remove-tags --overwrite us-latest.osm.pbf w/tiger:reviewed=no -o us-latest-tiger.osm.pbf
+osmium tags-filter --remove-tags --overwrite us-latest.osm.pbf w/tiger:reviewed -o us-latest-tiger.osm.pbf
 osmium export --attributes type,id,version,timestamp --overwrite us-latest-tiger.osm.pbf -o us-latest-tiger.geojson
 
-osmium tags-filter --remove-tags --overwrite puerto-rico-latest.osm.pbf w/tiger:reviewed=no -o puerto-rico-latest-tiger.osm.pbf
+osmium tags-filter --remove-tags --overwrite puerto-rico-latest.osm.pbf w/tiger:reviewed -o puerto-rico-latest-tiger.osm.pbf
 osmium export --attributes type,id,version,timestamp --overwrite puerto-rico-latest-tiger.osm.pbf -o puerto-rico-latest-tiger.geojson
 
 # generate US and PR tiger tile file
