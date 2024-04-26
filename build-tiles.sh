@@ -10,6 +10,7 @@ rm us-latest-tiger.osm.pbf
 rm tilesets/us-latest.pmtiles
 rm tilesets/us-latest-streetaddress.pmtiles
 rm tilesets/washington-latest.pmtiles
+rm tilesets/utah-latest.pmtiles
 
 # download fresh extracts if we're in a new env
 if [ ! -s us-latest.osm.pbf ] ; then
