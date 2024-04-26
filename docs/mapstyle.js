@@ -53,6 +53,22 @@ var mapstyle_layers = [
     "filter": ["all", ["==", "man_made", "pipeline"], ["==","tiger:reviewed","no"]]
   },
   {
+    id: "tigerReview-power",
+    type: "line",
+    paint: {
+      "line-color": "#0000FF",
+      "line-width": 2,
+    },
+    "layout": {
+      "line-cap": "round",
+      "line-join": "round",
+      "visibility": "none"
+    },
+    source: "tiger",
+    "source-layer": "highways",
+    "filter": ["all", ["has","power"], ["==","tiger:reviewed","no"]]
+  },
+  {
     id: "streetaddress",
     type: "line",
     paint: {
