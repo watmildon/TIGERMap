@@ -28,6 +28,11 @@ document.addEventListener("alpine:init", async () => {
           url: "pmtiles://" + url_prefix + "utah-latest.pmtiles",
           attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
         },
+        gnisMissing: {
+          type: "vector",
+          url: "pmtiles://" + url_prefix + "GNIS-Missing-Utah.pmtiles",
+          attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
+        },
         osmcarto: {
           type: "raster",
           tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
@@ -90,6 +95,14 @@ document.addEventListener("alpine:init", async () => {
   map.on("mouseenter", "allFeatures-node", onEnter);
   map.on("mouseleave", "allFeatures-node", onLeave);
   map.on("click", "allFeatures-node", onClick);
+
+  map.on("mouseenter", "gnisMissing", onEnter);
+  map.on("mouseleave", "gnisMissing", onLeave);
+  map.on("click", "gnisMissing", onClick);
+  map.on("mouseenter", "gnisMissing-node", onEnter);
+  map.on("mouseleave", "gnisMissing-node", onLeave);
+  map.on("click", "gnisMissing-node", onClick);
+
   map.on("moveend", function() {updateMapOnScroll();})
   map.showTileBoundaries = false;
   window.tigerMap = map;

@@ -1,3 +1,14 @@
+function setGNISVisibility() {
+  var visibility = map.getLayoutProperty('gnisMissing', 'visibility');
+  if (visibility === 'none') {
+    map.setLayoutProperty('gnisMissing', 'visibility', 'visible');
+    map.setLayoutProperty('gnisMissing-node', 'visibility', 'visible');
+  } else {
+    map.setLayoutProperty('gnisMissing', 'visibility', 'none');
+    map.setLayoutProperty('gnisMissing-node', 'visibility', 'none');
+  }
+}
+
 function updateMapOnScroll()
 {
     var filterTextBox = document.getElementById("filterTextBox");
@@ -178,6 +189,9 @@ function computeColor(value) {
 
     window.tigerMap.setFilter("allFeatures", filterArray)
     window.tigerMap.setFilter("allFeatures-node", filterArray)
+
+    window.tigerMap.setFilter("gnisMissing", filterArray)
+    window.tigerMap.setFilter("gnisMissing-node", filterArray)
   }
   
   function clearFilter() {
@@ -192,6 +206,9 @@ function computeColor(value) {
     // modify the map layers
     window.tigerMap.setFilter("allFeatures", null);
     window.tigerMap.setFilter("allFeatures-node", null);
+
+    window.tigerMap.setFilter("gnisMissing", null);
+    window.tigerMap.setFilter("gnisMissing-node", null);
 
     var filterTextBox = document.getElementById("filterTextBox");
     filterTextBox.value = "";
