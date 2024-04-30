@@ -49,10 +49,15 @@ osmium export --attributes type,id,version,timestamp --overwrite puerto-rico-lat
 # generate US and PR tiger tile file
 tippecanoe -zg -l highways -o us-latest.pmtiles --drop-densest-as-needed us-latest-tiger.geojson puerto-rico-latest-tiger.geojson
 
-# generate addr:street layer
+# generate US and PR addr:street files
 osmium tags-filter --remove-tags --overwrite us-latest.osm.pbf nwr/addr:street -o us-latest-addrstreet.osm.pbf
 osmium export --overwrite us-latest-addrstreet.osm.pbf -o us-latest-addrstreet.geojson
-tippecanoe -zg -l streetaddress -o us-latest-streetaddress.pmtiles --drop-densest-as-needed us-latest-addrstreet.geojson
+
+osmium tags-filter --remove-tags --overwrite puerto-rico-latest-tiger.osm.pbf nwr/addr:street -o puerto-rico-latest-addrstreet.osm.pbf
+osmium export --overwrite puerto-rico-latest-addrstreet.osm.pbf -o puerto-rico-latest-addrstreet.geojson
+
+# generate US and PR addr:street tile file
+tippecanoe -zg -l streetaddress -o us-latest-streetaddress.pmtiles --drop-densest-as-needed us-latest-addrstreet.geojson puerto-rico-latest-addrstreet.geojson
 
 # generate WAMap layer
 osmium export --attributes type,id,version,timestamp washington-latest.osm.pbf -o washington-latest.geojson
