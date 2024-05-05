@@ -59,7 +59,7 @@ document.addEventListener("alpine:init", async () => {
   map.dragRotate.disable();
   map.touchZoomRotate.disableRotation();
 
-  // Query functionalit
+  // Query functionality
   const onEnter = e => {
     map.getCanvas().style.cursor = "pointer";
   };
