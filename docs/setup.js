@@ -81,6 +81,39 @@ document.addEventListener("alpine:init", async () => {
   map.dragRotate.disable();
   map.touchZoomRotate.disableRotation();
 
+  // Query functionality
+  const onEnter = e => {
+    map.getCanvas().style.cursor = "pointer";
+  };
+  const onLeave = e => {
+    map.getCanvas().style.cursor = "";
+  }
+  const onClick = e => {
+    function feature2html({ properties }, i) {
+      let html = `<h4>feature #${i+1}</h4>`;
+      html += "<ul>"
+      for (const [key, val] of Object.entries(properties)) {
+        html += `<li>${key}=${val}</li>`;
+      }
+      html += "</ul>";
+      return html;
+    }
+    const features = {};
+    for (const f of e.features) {
+      features[f.properties['@type'] + f.properties['@id']] = f;
+    }
+    const html = `<div class="inspect-popup">${Array.from(Object.values(features)).map(feature2html).join("<br>")}</div>`;
+
+    const popup = new maplibregl.Popup()
+          .setLngLat(e.lngLat)
+          .setHTML(html)
+          .addTo(map)
+          .setMaxWidth("none");
+  };
+  map.on("mouseenter", "tigerReview", onEnter);
+  map.on("mouseleave", "tigerReview", onLeave);
+  map.on("click", "tigerReview", onClick);
+
   window.tigerMap = map;
 
   // Manage filter query parameter
