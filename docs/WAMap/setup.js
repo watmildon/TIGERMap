@@ -28,6 +28,15 @@ document.addEventListener("alpine:init", async () => {
           url: "pmtiles://" + url_prefix + "washington-latest.pmtiles",
           attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
         },
+        highlight: {
+          type: "geojson",
+          data: {
+              "type": "FeatureCollection",
+              "features": [
+              ]
+            },
+          attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
+        },
         osmcarto: {
           type: "raster",
           tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
@@ -71,16 +80,28 @@ document.addEventListener("alpine:init", async () => {
       let html = `<h4>feature #${i+1}</h4>`;
       html += "<ul>"
       for (const [key, val] of Object.entries(properties)) {
-        html += `<li>${key}=${val}</li>`;
+        if(key === "@id" && typeof(properties["@type"]) !== "undefined") {
+            let t = properties["@type"];
+            html += `<li>${key}=<a target="_blank" href="https://www.openstreetmap.org/${t}/${val}">${val}</a></li>`;
+        } else {
+            html += `<li>${key}=${val}</li>`;
+        }
       }
       html += "</ul>";
       return html;
     }
+    const newHighlightSource = {
+      "type": "FeatureCollection",
+      "features": [
+      ]
+    };
     const features = {};
     for (const f of e.features) {
       features[f.properties['@type'] + f.properties['@id']] = f;
+      newHighlightSource["features"].push(f);
     }
     const html = `<div class="inspect-popup">${Array.from(Object.values(features)).map(feature2html).join("<br>")}</div>`;
+    window.tigerMap.getSource("highlight").setData(newHighlightSource);
 
     const popup = new maplibregl.Popup()
           .setLngLat(e.lngLat)

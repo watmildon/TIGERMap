@@ -33,4 +33,18 @@ var mapstyle_layers = [
     "source-layer": "allFeatures",
     filter: ["==","$type","Point"]
   },
+  {
+    id: "highlight",
+    type: "line",
+    paint: {
+      "line-color":  "#f5812f",
+      "line-width": 5,
+    },
+    "layout": {
+      "line-cap": "round",
+      "line-join": "round",
+      "visibility": "visible"
+    },
+    source: "highlight"
+  }
 ];
