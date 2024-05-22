@@ -106,6 +106,7 @@ document.addEventListener("alpine:init", async () => {
       newHighlightSource["features"].push(f);
     }
     const html = `<div class="inspect-popup">${Array.from(Object.values(features)).map(feature2html).join("<br>")}</div>`;
+    window.tigerMap.getSource("highlight").setData(newHighlightSource);
 
     const popup = new maplibregl.Popup()
           .setLngLat(e.lngLat)
