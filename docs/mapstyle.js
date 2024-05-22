@@ -136,5 +136,19 @@ var mapstyle_layers = [
     },
     source: "redlined",
     "source-layer": "redlined-D",
+  },
+  {
+    id: "highlight",
+    type: "line",
+    paint: {
+      "line-color":  "#f5812f",
+      "line-width": 5,
+    },
+    "layout": {
+      "line-cap": "round",
+      "line-join": "round",
+      "visibility": "visible"
+    },
+    source: "highlight"
   }
 ];
