@@ -80,6 +80,9 @@ document.addEventListener("alpine:init", async () => {
   const onLeave = e => {
     map.getCanvas().style.cursor = "";
   }
+  const onClose = e => {
+    window.tigerMap.getSource("highlight").setData({"type":"FeatureCollection", "features":[]});
+  }
   const onClick = e => {
     function feature2html({ properties }, i) {
       let html = `<h4>feature #${i+1}</h4>`;
@@ -112,7 +115,8 @@ document.addEventListener("alpine:init", async () => {
           .setLngLat(e.lngLat)
           .setHTML(html)
           .addTo(map)
-          .setMaxWidth("none");
+          .setMaxWidth("none")
+          .on("close", onClose);
   };
   map.on("mouseenter", "allFeatures", onEnter);
   map.on("mouseleave", "allFeatures", onLeave);
