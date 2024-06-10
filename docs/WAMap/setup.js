@@ -6,7 +6,7 @@ document.addEventListener("alpine:init", async () => {
   if (is_local) {
     url_prefix = "http://127.0.0.1:8080/data/";
   } else {
-    url_prefix = "https://pub-45b39ea7c4e84b9bac2b3568e1dced89.r2.dev/";
+    url_prefix = "https://watmildon.org/";
   }
 
   // add the PMTiles plugin to the maplibregl global.
