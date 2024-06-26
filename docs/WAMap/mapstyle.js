@@ -46,5 +46,19 @@ var mapstyle_layers = [
       "visibility": "visible"
     },
     source: "highlight"
+  },
+  {
+    id: "voronoi",
+    type: "line",
+    paint: {
+      "line-color":  "#000000",
+      "line-width": 5,
+    },
+    "layout": {
+      "line-cap": "round",
+      "line-join": "round",
+      "visibility": "visible"
+    },
+    source: "voronoi"
   }
 ];

@@ -8,6 +8,73 @@ function updateMapOnScroll()
       addColorProperty(filterText.replace("(color)",""))
       return;
     }
+    if (filterText.startsWith("(voronoi)"))
+    {
+      addVoronoi(filterText.replace("(voronoi)",""))
+      return;
+    }
+}
+
+function addVoronoi(attributeToVoronoi)
+{
+  const { featureCollection } = turf.helpers;
+
+  var bounds = window.tigerMap.getBounds();
+
+  var options = {
+    bbox: [bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth()],
+  };
+
+  const [key, value] = attributeToVoronoi.split('=');
+
+  const features  = map.queryRenderedFeatures();
+  const filteredFeatures = features.filter((feat) => {
+    return feat.properties && feat.properties[key] === value;
+  });
+
+  const mixedFeatures = {
+    type: 'FeatureCollection',
+    features: filteredFeatures.map((feat) => ({
+      type: 'Feature',
+      geometry: feat.geometry,
+    })),
+  };
+
+  // Initialize arrays to store nodes and centroids
+  const nodes = [];
+  const centroids = [];
+  
+  // Iterate through the features
+  mixedFeatures.features.forEach((feature) => {
+    if (feature.geometry.type === 'Point') {
+      // It's a node, keep it
+      nodes.push(feature);
+    } else if (feature.geometry.type === 'Polygon') {
+      // only deal with simple polygons for now
+    if (feature.geometry.coordinates.length == 1) {
+      // Compute centroid for the polygon
+      const centroid = turf.centroid(feature);
+      centroids.push(centroid);
+    }
+    // Otherwise, skip this polygon (it has inner rings)
+    }
+    // Discard linestrings (ignore them)
+  });
+
+  // Create a new feature collection with nodes and centroids
+  const onlyNodesCentroids = featureCollection([...nodes, ...centroids]);
+
+  var voronoiPolygons = turf.voronoi(onlyNodesCentroids, options);
+  const filteredVoronoiPolygons = voronoiPolygons.features.filter((feat) => feat !== null);
+
+  const geojsonVoronoi = {
+    type: 'FeatureCollection',
+    features: filteredVoronoiPolygons.map((feat) => ({
+      type: 'Feature',
+      geometry: feat.geometry,
+    })),
+  };
+  window.tigerMap.getSource("voronoi").setData(geojsonVoronoi);
 }
 
 function addColorProperty(propertyToColor)
@@ -93,6 +160,11 @@ function computeColor(value) {
     {
       addColorProperty(filterText.replace("(color)",""))
       return;
+    }
+    if (filterText.startsWith("(voronoi)"))
+    {
+      filterText = filterText.replace("(voronoi)","");
+      addVoronoi(filterText)
     }
     map.setPaintProperty ('allFeatures','line-color','#000000');
     map.setPaintProperty ('allFeatures-node','circle-color','#000000');
@@ -220,6 +292,14 @@ function computeColor(value) {
     //},
     map.setPaintProperty ('allFeatures','line-color','#000000');
     map.setPaintProperty ('allFeatures-node','circle-color','#000000');
-    map.setPaintProperty('osmcarto','raster-saturation',0)
+    map.setPaintProperty('osmcarto','raster-saturation',0);
+
+    const emptyGeoJson = {
+      "type": "FeatureCollection",
+      "features": [
+      ]
+    };
+
+    window.tigerMap.getSource("voronoi").setData(emptyGeoJson);
   }
   

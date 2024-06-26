@@ -37,6 +37,15 @@ document.addEventListener("alpine:init", async () => {
             },
           attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
         },
+        voronoi: {
+          type: "geojson",
+          data: {
+              "type": "FeatureCollection",
+              "features": [
+              ]
+            },
+          attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
+        },
         osmcarto: {
           type: "raster",
           tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"],
