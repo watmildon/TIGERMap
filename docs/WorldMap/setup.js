@@ -25,7 +25,9 @@ document.addEventListener("alpine:init", async () => {
       sources: {
         WAMap: {
           type: "vector",
-          url: "pmtiles://" + url_prefix + "washington-latest.pmtiles",
+          tiles: ['https://random-geo-data.93b6cf.workers.dev/planet-240722/{z}/{x}/{y}.mvt'],
+          minzoom: 12,
+          maxzoom: 14,
           attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
         },
         highlight: {
