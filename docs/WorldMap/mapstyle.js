@@ -17,7 +17,7 @@ var mapstyle_layers = [
       "visibility": "visible"
     },
     source: "WAMap",
-    "source-layer": "allFeatures",
+    "source-layer": "osm",
   },
   {
     id: "allFeatures-node",
@@ -30,7 +30,7 @@ var mapstyle_layers = [
       "visibility": "visible"
     },
     source: "WAMap",
-    "source-layer": "allFeatures",
+    "source-layer": "osm",
     filter: ["==","$type","Point"]
   },
   {
