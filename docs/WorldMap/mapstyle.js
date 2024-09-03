@@ -9,7 +9,13 @@ var mapstyle_layers = [
     type: "line",
     paint: {
       "line-color": "#000000",
-      "line-width": 2,
+      "line-width": [
+        "interpolate",
+        ["linear"],
+        ["zoom"],
+        10, 0.1,
+        14, 2.5
+      ],
     },
     "layout": {
       "line-cap": "round",
@@ -24,7 +30,13 @@ var mapstyle_layers = [
     type: "circle",
     paint: {
       "circle-color": "#000000",
-      "circle-radius":4,
+      "circle-radius": [
+        "interpolate",
+        ["linear"],
+        ["zoom"],
+        10, 0,
+        14, 3
+      ],
     },
     "layout": {
       "visibility": "visible"
