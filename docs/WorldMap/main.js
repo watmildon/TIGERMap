@@ -166,8 +166,8 @@ function computeColor(value) {
       filterText = filterText.replace("(voronoi)","");
       addVoronoi(filterText)
     }
-    map.setPaintProperty ('allFeatures','line-color','#000000');
-    map.setPaintProperty ('allFeatures-node','circle-color','#000000');
+    map.setPaintProperty('allFeatures','line-color','#000000');
+    map.setPaintProperty('allFeatures-node','circle-color','#000000');
     map.setPaintProperty('osmcarto','raster-saturation',0)
 
     if (filterText === "") {
@@ -249,7 +249,9 @@ function computeColor(value) {
     }
 
     window.tigerMap.setFilter("allFeatures", filterArray)
-    window.tigerMap.setFilter("allFeatures-node", filterArray)
+    // Add the `@type=node` filter to the node layer
+    filterArray.push(["==", ["get", "@type"], "node"]);
+    window.tigerMap.setFilter("allFeatures-node", filterArray);
   }
   
   function clearFilter() {
@@ -263,7 +265,7 @@ function computeColor(value) {
 
     // modify the map layers
     window.tigerMap.setFilter("allFeatures", null);
-    window.tigerMap.setFilter("allFeatures-node", null);
+    window.tigerMap.setFilter("allFeatures-node", ["==", ["get", "@type"], "node"]);
 
     var filterTextBox = document.getElementById("filterTextBox");
     filterTextBox.value = "";
