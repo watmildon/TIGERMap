@@ -25,9 +25,9 @@ document.addEventListener("alpine:init", async () => {
       sources: {
         WAMap: {
           type: "vector",
-          tiles: ['https://random-geo-data.93b6cf.workers.dev/planet-240722/{z}/{x}/{y}.mvt'],
-          minzoom: 12,
-          maxzoom: 14,
+          tiles: ['https://random-geo-data.93b6cf.workers.dev/planet-240826/{z}/{x}/{y}.mvt'],
+          minzoom: 7,
+          maxzoom: 13,
           attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
         },
         highlight: {
