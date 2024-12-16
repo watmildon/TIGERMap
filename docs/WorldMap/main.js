@@ -221,7 +221,7 @@ function computeColor(value) {
         {
           parts[1] = parts[1].split(",");
         }
-        var filterPart = [separator,["to-string",["get", parts[0]]],parts[1]]
+        var filterPart = [separator,["to-number",["get", parts[0]]],["to-number",parts[1]]]
         filterArray.push(filterPart);
       }
       else if (part.includes("="))
