@@ -13,11 +13,22 @@ document.addEventListener("alpine:init", async () => {
   let protocol = new pmtiles.Protocol();
   maplibregl.addProtocol("pmtiles", protocol.tile);
 
+  let tilesURL = url_prefix + "washington-latest.pmtiles"
+  let source = new pmtiles.FetchSource(tilesURL, new Headers({'Content-Language': 'xx'}));
+  const p = new pmtiles.PMTiles(source);
+  // this is so we share one instance across the JS code and the map renderer
+  protocol.add(p);
+
+  p.getMetadata().then((m) => {
+    window.tigerMap.addControl(new maplibregl.AttributionControl({customAttribution: "Data as of " + m.description}));
+  })
+
   map = new maplibregl.Map({
     container: "map",
     zoom: 7,
     hash: "map",
     center: [-120.6, 47.4],
+    attributionControl: false, // manually added later (w. date)
     style: {
       version: 8,
       layers: mapstyle_layers,
@@ -25,7 +36,7 @@ document.addEventListener("alpine:init", async () => {
       sources: {
         WAMap: {
           type: "vector",
-          url: "pmtiles://" + url_prefix + "washington-latest.pmtiles",
+          url: "pmtiles://" + tilesURL,
           attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
         },
         highlight: {
@@ -66,7 +77,7 @@ document.addEventListener("alpine:init", async () => {
     }),
   );
   map.addControl(new maplibregl.NavigationControl());
-
+  
   map.setPadding({ top: 57 });
 
   var scale = new maplibregl.ScaleControl({

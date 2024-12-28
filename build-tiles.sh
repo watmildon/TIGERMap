@@ -39,6 +39,11 @@ pyosmium-up-to-date -v --server http://download.geofabrik.de/north-america/us/pu
 pyosmium-up-to-date -v --server http://download.geofabrik.de/north-america/us/washington-updates -s 10000 washington-latest.osm.pbf
 pyosmium-up-to-date -v --server http://download.geofabrik.de/north-america/us/utah-updates -s 10000 utah-latest.osm.pbf
 
+# get timestamps
+LAST_TIMESTAMP_US=$(osmium fileinfo -g header.option.timestamp us-latest.osm.pbf)
+LAST_TIMESTAMP_WA=$(osmium fileinfo -g header.option.timestamp washington-latest.osm.pbf)
+LAST_TIMESTAMP_UT=$(osmium fileinfo -g header.option.timestamp utah-latest.osm.pbf)
+
 # generate US and PR tiger files
 osmium tags-filter --remove-tags --overwrite us-latest.osm.pbf w/tiger:reviewed -o us-latest-tiger.osm.pbf
 osmium export --attributes type,id,version,timestamp --overwrite us-latest-tiger.osm.pbf -o us-latest-tiger.geojson
@@ -47,7 +52,7 @@ osmium tags-filter --remove-tags --overwrite puerto-rico-latest.osm.pbf w/tiger:
 osmium export --attributes type,id,version,timestamp --overwrite puerto-rico-latest-tiger.osm.pbf -o puerto-rico-latest-tiger.geojson
 
 # generate US and PR tiger tile file
-tippecanoe -zg -l highways -o us-latest.pmtiles --drop-densest-as-needed --extend-zooms-if-still-dropping us-latest-tiger.geojson puerto-rico-latest-tiger.geojson
+tippecanoe -zg -l highways -o us-latest.pmtiles --drop-densest-as-needed --extend-zooms-if-still-dropping us-latest-tiger.geojson puerto-rico-latest-tiger.geojson -N $LAST_TIMESTAMP_US
 
 # generate US and PR addr:street files
 osmium tags-filter --remove-tags --overwrite us-latest.osm.pbf nwr/addr:street -o us-latest-addrstreet.osm.pbf
@@ -57,15 +62,15 @@ osmium tags-filter --remove-tags --overwrite puerto-rico-latest-tiger.osm.pbf nw
 osmium export --overwrite puerto-rico-latest-addrstreet.osm.pbf -o puerto-rico-latest-addrstreet.geojson
 
 # generate US and PR addr:street tile file
-tippecanoe -zg -l streetaddress -o us-latest-streetaddress.pmtiles --drop-densest-as-needed --extend-zooms-if-still-dropping us-latest-addrstreet.geojson puerto-rico-latest-addrstreet.geojson
+tippecanoe -zg -l streetaddress -o us-latest-streetaddress.pmtiles --drop-densest-as-needed --extend-zooms-if-still-dropping us-latest-addrstreet.geojson puerto-rico-latest-addrstreet.geojson -N $LAST_TIMESTAMP_US
 
 # generate WAMap layer
 osmium export --attributes type,id,version,timestamp washington-latest.osm.pbf -o washington-latest.geojson
-tippecanoe -zg -l allFeatures -o washington-latest.pmtiles --drop-densest-as-needed --extend-zooms-if-still-dropping washington-latest.geojson
+tippecanoe -zg -l allFeatures -o washington-latest.pmtiles --drop-densest-as-needed --extend-zooms-if-still-dropping washington-latest.geojson -N $LAST_TIMESTAMP_WA
 
 # generate UTMap layer
 osmium export --attributes type,id,version,timestamp utah-latest.osm.pbf -o utah-latest.geojson
-tippecanoe -zg -l allFeatures -o utah-latest.pmtiles --drop-densest-as-needed --extend-zooms-if-still-dropping utah-latest.geojson
+tippecanoe -zg -l allFeatures -o utah-latest.pmtiles --drop-densest-as-needed --extend-zooms-if-still-dropping utah-latest.geojson -N $LAST_TIMESTAMP_UT
 
 # Shuffle everything into the upload dir
 mv us-latest.pmtiles tilesets/us-latest.pmtiles

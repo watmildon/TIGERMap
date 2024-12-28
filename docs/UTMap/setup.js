@@ -13,11 +13,22 @@ document.addEventListener("alpine:init", async () => {
   let protocol = new pmtiles.Protocol();
   maplibregl.addProtocol("pmtiles", protocol.tile);
 
+  let tilesURL = url_prefix + "utah-latest.pmtiles"
+  let source = new pmtiles.FetchSource(tilesURL, new Headers({'Content-Language': 'xx'}));
+  const p = new pmtiles.PMTiles(source);
+  // this is so we share one instance across the JS code and the map renderer
+  protocol.add(p);
+
+  p.getMetadata().then((m) => {
+    window.tigerMap.addControl(new maplibregl.AttributionControl({customAttribution: "Data as of " + m.description}));
+  })
+
   map = new maplibregl.Map({
     container: "map",
     zoom: 6.5,
     hash: "map",
     center: [-111.1, 39.5],
+    attributionControl: false, // manually added later (w. date)
     style: {
       version: 8,
       layers: mapstyle_layers,
@@ -25,7 +36,7 @@ document.addEventListener("alpine:init", async () => {
       sources: {
         UTMap: {
           type: "vector",
-          url: "pmtiles://" + url_prefix + "utah-latest.pmtiles",
+          url: "pmtiles://" + tilesURL,
           attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
         },
         gnisMissing: {
