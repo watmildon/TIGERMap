@@ -35,7 +35,7 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-          
+
           <div class="btn-group my-2 my-md-0 me-2" role="group" aria-label="Button group with nested dropdown">
             <div class="btn-group" role="group" x-data>
               <a class="btn btn-outline-primary"
@@ -72,6 +72,17 @@
                     Edit with Rapid
                   </a>
                 </li>
+                <li id="open_in_tiger_king" x-data>
+                  <a
+                    class="dropdown-item"
+                    @click.prevent="let url = `https://whubsch.github.io/tigerking/?zoom=${Math.round(map.getZoom())}&x=${map.getBounds().getCenter().lat}&y=${map.getBounds().getCenter().lng}`;
+                  window.open(url);"
+                    @auxclick.prevent="let url = `https://whubsch.github.io/tigerking/?zoom=${Math.round(map.getZoom())}&x=${map.getBounds().getCenter().lat}&y=${map.getBounds().getCenter().lng}`;
+                  window.open(url);"
+                  >
+                    Edit with TIGER King
+                  </a>
+                </li>
 
                 <li><hr class="dropdown-divider"></li>
                 <li id="open_in_josm" x-data="{show_josm_not_running: false}">
@@ -104,7 +115,7 @@
                   Edit with JOSM (New layer)</a>
                   <span x-transition x-show="show_josm_not_running">JOSM isn't running…</span>
                 </li>
-                
+
               </ul>
             </div>
             <a
@@ -120,7 +131,7 @@
               View in OSM
             </a>
           </div>
-          
+
           <div class="btn-group my-2 my-md-0" role="group" aria-label="Basic outlined example">
             <div class="btn-group" role="group">
               <button type="button" class="btn btn-outline-secondary dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
@@ -232,8 +243,8 @@
               </ul>
             </div>
           </div>
-      
-          <div class="input-group mx-2 my-2" style="width: 100%; min-width:150px; max-width:670px;">            
+
+          <div class="input-group mx-2 my-2" style="width: 100%; min-width:150px; max-width:670px;">
             <input type="text" class="form-control" placeholder="filter" id="filterTextBox" data-bs-html="true" title="<b>Try these:</b><br/>highway<br/>tiger:source<br/>railway<br/>surface!=asphalt,paved<br/>" data-bs-toggle="tooltip" data-placement="bottom" data-html="true" aria-label="filter" aria-describedby="basic-addon1">
             <div class="input-group-append">
               <button class="btn btn-outline-secondary" style="border-radius: 0" type="button" id="filterButton" onclick="filterMap()">Filter</button>
