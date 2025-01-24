@@ -1,3 +1,4 @@
+
 # TIGERMap!
 A map to help aid OpenStreetMap mappers in the ongoing effort to complete the [review of data](https://wiki.openstreetmap.org/wiki/TIGER_fixup) from the [TIGER import](https://wiki.openstreetmap.org/wiki/TIGER).
 
@@ -40,9 +41,17 @@ No tags have been stripped so there's a rich set of tags to investigate and get 
 * highway;surface
 * highway=trunk
 * railway=abandoned
+* building=yes
 * highway=secondary;surface=paved,asphalt
+* leisure=pitch;!sport
+
+
+## Experimental Features
+There are a few more special operators that can help investigate data in OSM. These are available on [WAMap](https://watmildon.github.io/TIGERMap/WAMap/) and [UTMap](https://watmildon.github.io/TIGERMap/UTMap/)
+
+* Generate a [Voronoi diagram](https://en.wikipedia.org/wiki/Voronoi_diagram) for a set of node elements. Ex: `(voronoi)cuisine=pizza`
+* Colorize elements based off of values in a key. Ex: `(color)building`
 
 ## Copyright
 
 Copyright MIT or Apache-2.0
-
