@@ -15,22 +15,22 @@ rm tilesets/utah-latest.pmtiles
 # download fresh extracts if we're in a new env
 if [ ! -s us-latest.osm.pbf ] ; then
 	echo "No us-latest.osm.pbf, downloading.."
-	curl -O https://download.geofabrik.de/north-america/us-latest.osm.pbf
+	curl -O -L https://download.geofabrik.de/north-america/us-latest.osm.pbf
 fi
 
 if [ ! -s puerto-rico-latest.osm.pbf ] ; then
 	echo "No puerto-rico-latest.osm.pbf, downloading.."
-	curl -O https://download.geofabrik.de/north-america/us/puerto-rico-latest.osm.pbf
+	curl -O -L https://download.geofabrik.de/north-america/us/puerto-rico-latest.osm.pbf
 fi
 
 if [ ! -s washington-latest.osm.pbf ] ; then
 	echo "No washington-latest.osm.pbf, downloading.."
-	curl -O https://download.geofabrik.de/north-america/us/washington-latest.osm.pbf
+	curl -O -L https://download.geofabrik.de/north-america/us/washington-latest.osm.pbf
 fi
 
 if [ ! -s utah-latest.osm.pbf ] ; then
 	echo "No utah-latest.osm.pbf, downloading.."
-	curl -O https://download.geofabrik.de/north-america/us/utah-latest.osm.pbf
+	curl -O -L https://download.geofabrik.de/north-america/us/utah-latest.osm.pbf
 fi
 
 # update existing extracts
