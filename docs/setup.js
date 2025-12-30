@@ -51,7 +51,7 @@ document.addEventListener("alpine:init", async () => {
         },
         NAD: {
           type: "vector",
-          url: "pmtiles://" + url_prefix + "NAD_r15.pmtiles",
+          url: "pmtiles://" + url_prefix + "NAD.pmtiles",
           attribution: "© Public Domain, USDOT",
         },
         counties: {
