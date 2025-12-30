@@ -106,7 +106,7 @@ var mapstyle_layers = [
       "visibility": "none"
     },
     source: "NAD",
-    "source-layer": "NAD",
+    "source-layer": "allFeatures",
   },
   {
     id: "counties",
