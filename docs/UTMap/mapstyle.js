@@ -18,6 +18,7 @@ var mapstyle_layers = [
     },
     source: "UTMap",
     "source-layer": "allFeatures",
+    filter: ["!=", "$type", "Point"]
   },
   {
     id: "allFeatures-node",
@@ -47,6 +48,7 @@ var mapstyle_layers = [
     },
     source: "gnisMissing",
     "source-layer": "allFeatures",
+    filter: ["!=", "$type", "Point"]
   },
   {
     id: "gnisMissing-node",

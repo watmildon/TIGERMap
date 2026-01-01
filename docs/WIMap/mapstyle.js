@@ -16,8 +16,8 @@ var mapstyle_layers = [
       "line-join": "round",
       "visibility": "visible"
     },
-    source: "WAMap",
-    "source-layer": "osm",
+    source: "WIMap",
+    "source-layer": "allFeatures",
   },
   {
     id: "allFeatures-node",
@@ -29,8 +29,8 @@ var mapstyle_layers = [
     "layout": {
       "visibility": "visible"
     },
-    source: "WAMap",
-    "source-layer": "osm",
+    source: "WIMap",
+    "source-layer": "allFeatures",
     filter: ["==","$type","Point"]
   },
   {

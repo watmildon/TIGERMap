@@ -1,4 +1,4 @@
-// WAMap Setup - Map Initialization
+// WIMap Setup - Map Initialization
 // Uses shared libraries: filter-parser.js and map-utils.js
 
 document.addEventListener("alpine:init", async () => {
@@ -7,7 +7,7 @@ document.addEventListener("alpine:init", async () => {
   const urlPrefix = MapUtils.getUrlPrefix();
   const protocol = MapUtils.initPMTilesProtocol();
 
-  const tilesURL = urlPrefix + "washington-latest.pmtiles";
+  const tilesURL = urlPrefix + "wisconsin-latest.pmtiles";
 
   const source = new pmtiles.FetchSource(tilesURL, new Headers({'Content-Language': 'xx'}));
   const p = new pmtiles.PMTiles(source);
@@ -21,7 +21,7 @@ document.addEventListener("alpine:init", async () => {
     container: "map",
     zoom: 7,
     hash: "map",
-    center: [-120.6, 47.4],
+    center: [-89.5, 44.5],
     attributionControl: false, // manually added later (w. date)
     style: {
       version: 8,
@@ -29,7 +29,7 @@ document.addEventListener("alpine:init", async () => {
       glyphs: "./font/{fontstack}/{range}.pbf",
       projection: {"type": "globe"},
       sources: {
-        WAMap: {
+        WIMap: {
           type: "vector",
           url: "pmtiles://" + tilesURL,
           attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>',

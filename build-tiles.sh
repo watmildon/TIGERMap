@@ -11,6 +11,7 @@ rm tilesets/us-latest.pmtiles
 rm tilesets/us-latest-streetaddress.pmtiles
 rm tilesets/washington-latest.pmtiles
 rm tilesets/utah-latest.pmtiles
+rm tilesets/wisconsin-latest.pmtiles
 
 # download fresh extracts if we're in a new env
 if [ ! -s us-latest.osm.pbf ] ; then
@@ -33,16 +34,23 @@ if [ ! -s utah-latest.osm.pbf ] ; then
 	curl -O -L https://download.geofabrik.de/north-america/us/utah-latest.osm.pbf
 fi
 
+if [ ! -s wisconsin-latest.osm.pbf ] ; then
+	echo "No wisconsin-latest.osm.pbf, downloading.."
+	curl -O -L https://download.geofabrik.de/north-america/us/wisconsin-latest.osm.pbf
+fi
+
 # update existing extracts
 pyosmium-up-to-date -v --server http://download.geofabrik.de/north-america/us-updates -s 10000 us-latest.osm.pbf
 pyosmium-up-to-date -v --server http://download.geofabrik.de/north-america/us/puerto-rico-updates -s 10000 puerto-rico-latest.osm.pbf
 pyosmium-up-to-date -v --server http://download.geofabrik.de/north-america/us/washington-updates -s 10000 washington-latest.osm.pbf
 pyosmium-up-to-date -v --server http://download.geofabrik.de/north-america/us/utah-updates -s 10000 utah-latest.osm.pbf
+pyosmium-up-to-date -v --server http://download.geofabrik.de/north-america/us/wisconsin-updates -s 10000 wisconsin-latest.osm.pbf
 
 # get timestamps
 LAST_TIMESTAMP_US=$(osmium fileinfo -g header.option.timestamp us-latest.osm.pbf)
 LAST_TIMESTAMP_WA=$(osmium fileinfo -g header.option.timestamp washington-latest.osm.pbf)
 LAST_TIMESTAMP_UT=$(osmium fileinfo -g header.option.timestamp utah-latest.osm.pbf)
+LAST_TIMESTAMP_WI=$(osmium fileinfo -g header.option.timestamp wisconsin-latest.osm.pbf)
 
 # generate US and PR tiger files
 osmium tags-filter --remove-tags --overwrite us-latest.osm.pbf w/tiger:reviewed -o us-latest-tiger.osm.pbf
@@ -72,11 +80,16 @@ tippecanoe -zg -l allFeatures -o washington-latest.pmtiles --drop-densest-as-nee
 osmium export --attributes type,id,version,timestamp utah-latest.osm.pbf -o utah-latest.geojson
 tippecanoe -zg -l allFeatures -o utah-latest.pmtiles --drop-densest-as-needed --extend-zooms-if-still-dropping utah-latest.geojson -N $LAST_TIMESTAMP_UT
 
+# generate WIMap layer
+osmium export --attributes type,id,version,timestamp wisconsin-latest.osm.pbf -o wisconsin-latest.geojson
+tippecanoe -zg -l allFeatures -o wisconsin-latest.pmtiles --drop-densest-as-needed --extend-zooms-if-still-dropping wisconsin-latest.geojson -N $LAST_TIMESTAMP_WI
+
 # Shuffle everything into the upload dir
 mv us-latest.pmtiles tilesets/us-latest.pmtiles
 mv us-latest-streetaddress.pmtiles tilesets/us-latest-streetaddress.pmtiles
 mv washington-latest.pmtiles tilesets/washington-latest.pmtiles
 mv utah-latest.pmtiles tilesets/utah-latest.pmtiles
+mv wisconsin-latest.pmtiles tilesets/wisconsin-latest.pmtiles
 
 # Mirror everything to cloud host
 rclone sync --transfers 1 --order-by size,descending --bwlimit 10M ~/TIGERProject/tilesets r2:tiger-map
