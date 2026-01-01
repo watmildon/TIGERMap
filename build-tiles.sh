@@ -54,7 +54,7 @@ LAST_TIMESTAMP_WI=$(osmium fileinfo -g header.option.timestamp wisconsin-latest.
 
 # generate US and PR tiger files
 osmium tags-filter --remove-tags --overwrite us-latest.osm.pbf w/tiger:reviewed -o us-latest-tiger.osm.pbf
-osmium export --attributes type,id,version,timestamp --overwrite us-latest-tiger.osm.pbf -o us-latest-tiger.geojson
+osmium export --attributes type,id,version,timestamp --overwrite us-latest-tiger.osm.pbf -o us-latest-tiger.geojson -i dense_file_array
 
 osmium tags-filter --remove-tags --overwrite puerto-rico-latest.osm.pbf w/tiger:reviewed -o puerto-rico-latest-tiger.osm.pbf
 osmium export --attributes type,id,version,timestamp --overwrite puerto-rico-latest-tiger.osm.pbf -o puerto-rico-latest-tiger.geojson
