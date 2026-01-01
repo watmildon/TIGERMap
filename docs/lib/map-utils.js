@@ -224,34 +224,6 @@ const MapUtils = {
   },
 
   /**
-   * Load PMTiles source and add metadata attribution
-   * @param {Object} protocol - PMTiles protocol instance
-   * @param {string} tilesURL - URL to the PMTiles file
-   * @param {Object} map - MapLibre GL map instance
-   * @returns {Promise<Object>} Promise that resolves to the PMTiles instance
-   */
-  async loadPMTilesSource(protocol, tilesURL, map) {
-    const source = new pmtiles.FetchSource(tilesURL, new Headers({'Content-Language': 'xx'}));
-    const p = new pmtiles.PMTiles(source);
-
-    // Share instance across JS code and map renderer
-    protocol.add(p);
-
-    // Add metadata attribution when available
-    p.getMetadata().then((m) => {
-      if (m && m.description) {
-        map.addControl(
-          new maplibregl.AttributionControl({
-            customAttribution: "Data as of " + m.description
-          })
-        );
-      }
-    });
-
-    return p;
-  },
-
-  /**
    * Create an empty GeoJSON source structure
    * @returns {Object} Empty GeoJSON FeatureCollection
    */
