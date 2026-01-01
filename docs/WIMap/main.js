@@ -1,23 +1,11 @@
-// UTMap Main - Filter and Layer Management with Experimental Features
+// WIMap Main - Filter and Layer Management with Experimental Features
 // Uses shared libraries: filter-parser.js, map-utils.js, experimental-features.js
 
-// Create filter parser instance with UTMap-specific config
+// Create filter parser instance with WIMap-specific config
 const filterParser = new FilterParser({
   autoAppendTigerReviewed: false,
-  targetLayers: ['allFeatures', 'allFeatures-node', 'gnisMissing', 'gnisMissing-node']
+  targetLayers: ['allFeatures', 'allFeatures-node']
 });
-
-// GNIS layer visibility toggle
-function setGNISVisibility() {
-  const visibility = map.getLayoutProperty('gnisMissing', 'visibility');
-  if (visibility === 'none') {
-    map.setLayoutProperty('gnisMissing', 'visibility', 'visible');
-    map.setLayoutProperty('gnisMissing-node', 'visibility', 'visible');
-  } else {
-    map.setLayoutProperty('gnisMissing', 'visibility', 'none');
-    map.setLayoutProperty('gnisMissing-node', 'visibility', 'none');
-  }
-}
 
 // Experimental feature handlers
 function updateMapOnScroll() {
@@ -26,6 +14,10 @@ function updateMapOnScroll() {
 
   if (filterText.startsWith("(color)")) {
     ExperimentalFeatures.addColorProperty(window.tigerMap, filterText.replace("(color)", ""), ['allFeatures', 'allFeatures-node']);
+    return;
+  }
+  if (filterText.startsWith("(voronoi)")) {
+    ExperimentalFeatures.addVoronoi(window.tigerMap, filterText.replace("(voronoi)", ""));
     return;
   }
 }
@@ -43,6 +35,11 @@ function filterMap() {
   // Handle experimental features
   if (filterText.startsWith("(color)")) {
     ExperimentalFeatures.addColorProperty(window.tigerMap, filterText.replace("(color)", ""), ['allFeatures', 'allFeatures-node']);
+    return;
+  }
+  if (filterText.startsWith("(voronoi)")) {
+    const cleanFilter = filterText.replace("(voronoi)", "");
+    ExperimentalFeatures.addVoronoi(window.tigerMap, cleanFilter);
     return;
   }
 
@@ -84,4 +81,5 @@ function clearFilter() {
 
   // Reset experimental features
   ExperimentalFeatures.resetColors(window.tigerMap, ['allFeatures', 'allFeatures-node'], '#000000');
+  ExperimentalFeatures.clearVoronoi(window.tigerMap);
 }
