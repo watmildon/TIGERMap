@@ -8,7 +8,14 @@ document.addEventListener("alpine:init", async () => {
   const protocol = MapUtils.initPMTilesProtocol();
 
   const tilesURL = urlPrefix + "us-latest.pmtiles";
-  await MapUtils.loadPMTilesSource(protocol, tilesURL, null);
+
+  const source = new pmtiles.FetchSource(tilesURL, new Headers({'Content-Language': 'xx'}));
+  const p = new pmtiles.PMTiles(source);
+  protocol.add(p);
+
+  p.getMetadata().then((m) => {
+    map.addControl(new maplibregl.AttributionControl({customAttribution: "Data as of " + m.description}));
+  });
 
   map = new maplibregl.Map({
     container: "map",
@@ -65,14 +72,6 @@ document.addEventListener("alpine:init", async () => {
         },
       },
     },
-  });
-
-  // Load PMTiles metadata and add attribution
-  const source = new pmtiles.FetchSource(tilesURL, new Headers({'Content-Language': 'xx'}));
-  const p = new pmtiles.PMTiles(source);
-  protocol.add(p);
-  p.getMetadata().then((m) => {
-    map.addControl(new maplibregl.AttributionControl({customAttribution: "Data as of " + m.description}));
   });
 
   addEclipseData(map);
