@@ -40,11 +40,11 @@ if [ ! -s wisconsin-latest.osm.pbf ] ; then
 fi
 
 # update existing extracts
-pyosmium-up-to-date -v --server http://download.geofabrik.de/north-america/us-updates -s 10000 us-latest.osm.pbf
-pyosmium-up-to-date -v --server http://download.geofabrik.de/north-america/us/puerto-rico-updates -s 10000 puerto-rico-latest.osm.pbf
-pyosmium-up-to-date -v --server http://download.geofabrik.de/north-america/us/washington-updates -s 10000 washington-latest.osm.pbf
-pyosmium-up-to-date -v --server http://download.geofabrik.de/north-america/us/utah-updates -s 10000 utah-latest.osm.pbf
-pyosmium-up-to-date -v --server http://download.geofabrik.de/north-america/us/wisconsin-updates -s 10000 wisconsin-latest.osm.pbf
+pyosmium-up-to-date -v --server https://download.geofabrik.de/north-america/us-updates -s 10000 us-latest.osm.pbf
+pyosmium-up-to-date -v --server https://download.geofabrik.de/north-america/us/puerto-rico-updates -s 10000 puerto-rico-latest.osm.pbf
+pyosmium-up-to-date -v --server https://download.geofabrik.de/north-america/us/washington-updates -s 10000 washington-latest.osm.pbf
+pyosmium-up-to-date -v --server https://download.geofabrik.de/north-america/us/utah-updates -s 10000 utah-latest.osm.pbf
+pyosmium-up-to-date -v --server https://download.geofabrik.de/north-america/us/wisconsin-updates -s 10000 wisconsin-latest.osm.pbf
 
 # get timestamps
 LAST_TIMESTAMP_US=$(osmium fileinfo -g header.option.timestamp us-latest.osm.pbf)
@@ -54,7 +54,7 @@ LAST_TIMESTAMP_WI=$(osmium fileinfo -g header.option.timestamp wisconsin-latest.
 
 # generate US and PR tiger files
 osmium tags-filter --remove-tags --overwrite us-latest.osm.pbf w/tiger:reviewed -o us-latest-tiger.osm.pbf
-osmium export --attributes type,id,version,timestamp --overwrite us-latest-tiger.osm.pbf -o us-latest-tiger.geojson
+osmium export --attributes type,id,version,timestamp --overwrite us-latest-tiger.osm.pbf -o us-latest-tiger.geojson -i dense_file_array
 
 osmium tags-filter --remove-tags --overwrite puerto-rico-latest.osm.pbf w/tiger:reviewed -o puerto-rico-latest-tiger.osm.pbf
 osmium export --attributes type,id,version,timestamp --overwrite puerto-rico-latest-tiger.osm.pbf -o puerto-rico-latest-tiger.geojson
