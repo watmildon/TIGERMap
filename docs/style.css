@@ -1,16 +1,16 @@
 body {
-	
+	height: 100vh;
+	height: 100dvh;
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
 }
 
 main {
-	height: 100%;
-	width: 100%;
-	position: fixed;
+	flex: 1;
+	min-height: 0;
+	position: relative;
 	touch-action: none;
-
-	/* -webkit-overflow-scrolling: touch;
-    position: fixed;
-    overflow: hidden; */
 }
 
 #map {
@@ -27,13 +27,9 @@ main {
 	vertical-align: -.125rem;
 }
 
-.maplibregl-control-container.mapboxgl-control-container {
-	padding-top: 57px;
-}
-
-.mapboxgl-ctrl-top-right, .maplibregl-ctrl-top-right {
-	right: env(safe-area-inset-left, 0) !important;
-	top: unset !important;
+.maplibregl-ctrl-attrib,
+.mapboxgl-ctrl-attrib {
+	color: #000;
 }
 
 .maplibregl-popup .inspect-popup ul {
@@ -61,9 +57,21 @@ main {
     background-color: #3a3f44;
 }
 
-[data-bs-theme="dark"] .maplibregl-ctrl-attrib,
-[data-bs-theme="dark"] .mapboxgl-ctrl-attrib {
+/* MapLibre's control icons are SVGs hardcoded to fill='#333', invisible on
+   the dark button background. Invert to light; hue-rotate keeps colored
+   states (e.g. active geolocate blue) close to their original hue. */
+[data-bs-theme="dark"] .maplibregl-ctrl-group button .maplibregl-ctrl-icon,
+[data-bs-theme="dark"] .mapboxgl-ctrl-group button .mapboxgl-ctrl-icon {
+    filter: invert(1) hue-rotate(180deg);
+}
+
+/* .maplibregl-ctrl included so this outranks MapLibre's own
+   .maplibregl-ctrl.maplibregl-ctrl-attrib rules (equal specificity
+   otherwise, and maplibre-gl.css loads after this stylesheet) */
+[data-bs-theme="dark"] .maplibregl-ctrl.maplibregl-ctrl-attrib,
+[data-bs-theme="dark"] .mapboxgl-ctrl.mapboxgl-ctrl-attrib {
     background-color: rgba(43, 48, 53, 0.8);
+    color: #dee2e6;
 }
 
 [data-bs-theme="dark"] .maplibregl-ctrl-attrib a,

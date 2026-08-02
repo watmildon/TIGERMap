@@ -100,7 +100,6 @@ const MapUtils = {
    * @param {boolean} options.navigation - Add navigation control (default: true)
    * @param {boolean} options.scale - Add scale control (default: true)
    * @param {string} options.scaleUnit - Scale unit: 'imperial' or 'metric' (default: 'imperial')
-   * @param {number} options.topPadding - Top padding in pixels (default: 57)
    */
   addStandardControls(map, options = {}) {
     const config = {
@@ -108,7 +107,6 @@ const MapUtils = {
       navigation: true,
       scale: true,
       scaleUnit: 'imperial',
-      topPadding: 57,
       ...options
     };
 
@@ -127,11 +125,6 @@ const MapUtils = {
     // Add navigation control
     if (config.navigation) {
       map.addControl(new maplibregl.NavigationControl());
-    }
-
-    // Set top padding for controls
-    if (config.topPadding) {
-      map.setPadding({ top: config.topPadding });
     }
 
     // Add scale control
