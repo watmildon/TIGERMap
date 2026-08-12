@@ -17,3 +17,11 @@
 /tmp.*.geojson
 /tmp.*.pmtiles.tmp
 /waterwaymap.org_loops_stats.csv.zst
+
+# build-tiles.sh runtime state (WSL box)
+*.osm.pbf.part
+/.build.lock
+/logs/
+/staging/
+/state/
+/tilesets/

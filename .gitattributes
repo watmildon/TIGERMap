@@ -1,0 +1,2 @@
+# build-tiles.sh runs under bash on WSL; CRLF would break it
+*.sh text eol=lf
