@@ -7,7 +7,21 @@ const filterParser = new FilterParser({
   targetLayers: ['tigerReview']
 });
 
-function updateMapLayers(checkboxId, layerName) {
+// Overlay checkboxes and the map layer each one controls.
+// Their checked state is kept in the `layers` URL parameter.
+const OVERLAY_LAYERS = {
+  tigerCheckbox: "tigerReview",
+  tigerRailCheckbox: "tigerReview-rail",
+  tigerPipelineCheckbox: "tigerReview-pipeline",
+  tigerPowerCheckbox: "tigerReview-power",
+  housenumberCheckbox: "streetaddress",
+  NADCheckbox: "NAD",
+  countiesCheckbox: "counties",
+  redlinedCheckbox: "redlined",
+  eclipseCheckbox: "EclipseCenterline",
+};
+
+function applyLayerVisibility(checkboxId, layerName) {
   MapUtils.updateLayerVisibility(window.tigerMap, checkboxId, layerName);
 
   // Handle associated layers
@@ -17,6 +31,23 @@ function updateMapLayers(checkboxId, layerName) {
   if (layerName === "EclipseCenterline") {
     MapUtils.updateLayerVisibility(window.tigerMap, checkboxId, "penumbra");
   }
+}
+
+function updateMapLayers(checkboxId, layerName) {
+  applyLayerVisibility(checkboxId, layerName);
+  MapUtils.updateLayersURL(Object.keys(OVERLAY_LAYERS));
+}
+
+// Check the overlays named in the URL, then match the map to the checkboxes
+// once its layers exist. Syncing every checkbox also covers browsers that
+// restore form state on reload.
+function initLayersFromURL(map) {
+  MapUtils.initLayersFromURL(Object.keys(OVERLAY_LAYERS));
+  map.on("load", () => {
+    for (const [checkboxId, layerName] of Object.entries(OVERLAY_LAYERS)) {
+      applyLayerVisibility(checkboxId, layerName);
+    }
+  });
 }
 
 function filterMap() {

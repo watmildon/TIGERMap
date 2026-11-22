@@ -84,6 +84,9 @@ document.addEventListener("alpine:init", async () => {
 
   window.tigerMap = map;
 
+  // Initialize overlay checkboxes from URL
+  initLayersFromURL(map);
+
   // Initialize filter from URL
   MapUtils.initFilterFromURL(filterMap);
 

@@ -247,6 +247,50 @@ const MapUtils = {
         console.warn(`Could not set visibility on layer ${layer}:`, e);
       }
     });
+  },
+
+  /**
+   * URL key for a layer checkbox: its ID without the "Checkbox" suffix,
+   * lowercased (e.g. "tigerRailCheckbox" -> "tigerrail").
+   * @private
+   */
+  _layerKey(checkboxId) {
+    return checkboxId.replace(/Checkbox$/, '').toLowerCase();
+  },
+
+  /**
+   * Set layer checkboxes from the `layers` URL parameter, a comma-separated
+   * list of the layers that should be checked. Checkboxes not listed are
+   * unchecked. Does nothing when the parameter is absent, so the page's
+   * default checkbox state applies.
+   * @param {Array<string>} checkboxIds - IDs of the layer checkboxes
+   */
+  initLayersFromURL(checkboxIds) {
+    const params = new URLSearchParams(window.location.search);
+    if (!params.has('layers')) return;
+
+    const wanted = new Set(
+      params.get('layers').split(',').map(s => s.trim().toLowerCase()).filter(Boolean)
+    );
+    checkboxIds.forEach(id => {
+      const checkBox = document.getElementById(id);
+      if (checkBox) checkBox.checked = wanted.has(this._layerKey(id));
+    });
+  },
+
+  /**
+   * Write the checked layer checkboxes to the `layers` URL parameter,
+   * keeping the other query parameters and the map hash.
+   * @param {Array<string>} checkboxIds - IDs of the layer checkboxes
+   */
+  updateLayersURL(checkboxIds) {
+    const keys = checkboxIds
+      .filter(id => document.getElementById(id)?.checked)
+      .map(id => this._layerKey(id));
+
+    const url = new URL(window.location.href);
+    url.searchParams.set('layers', keys.join(','));
+    window.history.replaceState({}, '', url.toString());
   }
 };
 
