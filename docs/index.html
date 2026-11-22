@@ -249,8 +249,17 @@
             </div>
           </div>
 
+          <select class="form-select w-auto my-2 my-md-0 ms-md-2" id="editedSelect" aria-label="Last edited" title="Show TIGER features by when they were last edited" onchange="setEditedFilter()">
+            <option value="">Edited: any time</option>
+            <option value="last-7d">Edited: last 7 days</option>
+            <option value="last-30d">Edited: last 30 days</option>
+            <option value="last-1y">Edited: last year</option>
+            <option value="over-5y">Edited: 5+ years ago</option>
+            <option value="over-10y">Edited: 10+ years ago</option>
+          </select>
+
           <div class="input-group mx-2 my-2" style="width: 100%; min-width:150px; max-width:670px;">
-            <input type="text" class="form-control" placeholder="filter" id="filterTextBox" data-bs-html="true" title="<b>Try these:</b><br/>highway<br/>tiger:source<br/>railway<br/>surface!=asphalt,paved<br/>" data-bs-toggle="tooltip" data-placement="bottom" data-html="true" aria-label="filter" aria-describedby="basic-addon1">
+            <input type="text" class="form-control" placeholder="filter" id="filterTextBox" data-bs-html="true" title="<b>Try these:</b><br/>highway<br/>tiger:source<br/>railway<br/>surface!=asphalt,paved<br/>@timestamp&amp;lt;10y<br/>@timestamp&amp;gt;2025-01-01<br/>" data-bs-toggle="tooltip" data-placement="bottom" data-html="true" aria-label="filter" aria-describedby="basic-addon1">
             <div class="input-group-append">
               <button class="btn btn-outline-primary" style="border-radius: 0" type="button" id="filterButton" onclick="filterMap()">Filter</button>
             </div>

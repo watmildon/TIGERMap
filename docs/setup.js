@@ -87,6 +87,9 @@ document.addEventListener("alpine:init", async () => {
   // Initialize overlay checkboxes from URL
   initLayersFromURL(map);
 
+  // Restore "Last edited" choice and apply filters once the map loads
+  initFiltersOnLoad(map);
+
   // Initialize filter from URL
   MapUtils.initFilterFromURL(filterMap);
 

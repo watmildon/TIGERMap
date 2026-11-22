@@ -18,7 +18,7 @@ var mapstyle_layers = [
     },
     source: "tiger",
     "source-layer": "highways",
-    "filter": ["all", ["==", "tiger:reviewed", "no"]]
+    "filter": ["all", ["==", ["get", "tiger:reviewed"], "no"]]
   },
   {
     id: "tigerReview-rail",
@@ -34,7 +34,7 @@ var mapstyle_layers = [
     },
     source: "tiger",
     "source-layer": "highways",
-    "filter": ["all", ["==", "railway", "rail"], ["==","tiger:reviewed","no"]]
+    "filter": ["all", ["==", ["get", "railway"], "rail"], ["==", ["get", "tiger:reviewed"], "no"]]
   },
   {
     id: "tigerReview-pipeline",
@@ -50,7 +50,7 @@ var mapstyle_layers = [
     },
     source: "tiger",
     "source-layer": "highways",
-    "filter": ["all", ["==", "man_made", "pipeline"], ["==","tiger:reviewed","no"]]
+    "filter": ["all", ["==", ["get", "man_made"], "pipeline"], ["==", ["get", "tiger:reviewed"], "no"]]
   },
   {
     id: "tigerReview-power",
@@ -66,7 +66,7 @@ var mapstyle_layers = [
     },
     source: "tiger",
     "source-layer": "highways",
-    "filter": ["all", ["has","power"], ["==","tiger:reviewed","no"]]
+    "filter": ["all", ["has", "power"], ["==", ["get", "tiger:reviewed"], "no"]]
   },
   {
     id: "streetaddress",

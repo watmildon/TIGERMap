@@ -50,6 +50,72 @@ function initLayersFromURL(map) {
   });
 }
 
+// TIGER layers the "Last edited" filter applies to. The text filter applies
+// only to the first (the tiger:reviewed=no roads).
+const TIGER_LAYERS = ["tigerReview", "tigerReview-rail", "tigerReview-pipeline", "tigerReview-power"];
+
+// "Last edited" presets: URL value -> [comparison, age before now]
+const EDITED_PRESETS = {
+  "last-7d": [">=", "7d"],
+  "last-30d": [">=", "30d"],
+  "last-1y": [">=", "1y"],
+  "over-5y": ["<", "5y"],
+  "over-10y": ["<", "10y"],
+};
+
+let activeTextFilter = ""; // the text filter last applied, not just typed
+let mapStyleLoaded = false;
+
+function editedCondition() {
+  const preset = EDITED_PRESETS[document.getElementById("editedSelect")?.value];
+  if (!preset) return null;
+  const [op, age] = preset;
+  return FilterParser.timestampCondition(op, FilterParser.parseTimeValue(age));
+}
+
+// Set each TIGER layer's filter: its style filter (for the road layer, the
+// text filter when one is applied) combined with the "Last edited" choice.
+function applyTigerFilters() {
+  if (!mapStyleLoaded) return; // the map's load handler applies them
+  const edited = editedCondition();
+
+  for (const layer of TIGER_LAYERS) {
+    const base = layer === "tigerReview" && activeTextFilter
+      ? filterParser.parseFilter(activeTextFilter)
+      : mapstyle_layers.find(l => l.id === layer).filter;
+    try {
+      window.tigerMap.setFilter(layer, edited ? ["all", base, edited] : base);
+    } catch (e) {
+      console.warn(`Could not set filter on layer ${layer}:`, e);
+    }
+  }
+}
+
+function setEditedFilter() {
+  const value = document.getElementById("editedSelect").value;
+  const url = new URL(window.location.href);
+  if (value) {
+    url.searchParams.set("edited", value);
+  } else {
+    url.searchParams.delete("edited");
+  }
+  window.history.replaceState({}, "", url.toString());
+  applyTigerFilters();
+}
+
+// Restore the "Last edited" choice from the URL, and apply all filters once
+// the map's layers exist (a filter from the URL may be read before that).
+function initFiltersOnLoad(map) {
+  const edited = new URLSearchParams(window.location.search).get("edited");
+  const select = document.getElementById("editedSelect");
+  if (select && edited in EDITED_PRESETS) select.value = edited;
+
+  map.on("load", () => {
+    mapStyleLoaded = true;
+    applyTigerFilters();
+  });
+}
+
 function filterMap() {
   const filterTextBox = document.getElementById("filterTextBox");
   const filterText = filterTextBox.value;
@@ -74,11 +140,16 @@ function filterMap() {
     return;
   }
 
-  filterParser.applyFilter(filterText, window.tigerMap);
+  filterParser.updateURL(filterText);
+  activeTextFilter = filterText;
+  applyTigerFilters();
 }
 
 function clearFilter() {
-  filterParser.clearFilter(window.tigerMap);
+  // Clears the URL parameter and text box only; filters are rebuilt below
+  filterParser.clearFilter(window.tigerMap, []);
+  activeTextFilter = "";
+  applyTigerFilters();
   window.tigerMap.setLayoutProperty("tigerReview", "visibility", "visible");
 
   // Reset experimental features

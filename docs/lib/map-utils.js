@@ -32,6 +32,11 @@ const MapUtils = {
           if (key === "@id" && typeof(properties["@type"]) !== "undefined") {
             const t = properties["@type"];
             html += `<li>${key}=<a target="_blank" href="https://www.openstreetmap.org/${t}/${val}">${val}</a></li>`;
+          } else if (key === "@timestamp" && Number(val) >= FilterParser.MIN_OSM_TIMESTAMP) {
+            // Unix seconds -> "2025-07-17 19:46:35 UTC"; raw value on hover
+            const when = new Date(Number(val) * 1000).toISOString()
+              .replace("T", " ").replace(/\.\d+Z$/, " UTC");
+            html += `<li title="${val}">${key}=${when}</li>`;
           } else {
             html += `<li>${key}=${val}</li>`;
           }
