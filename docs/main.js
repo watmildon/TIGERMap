@@ -33,6 +33,7 @@ function applyLayerVisibility(checkboxId, layerName) {
     MapUtils.updateLayerVisibility(window.tigerMap, checkboxId, "penumbra");
   }
   if (layerName === "roar") {
+    MapUtils.updateLayerVisibility(window.tigerMap, checkboxId, "roar-dash");
     const legend = document.getElementById("roarLegend");
     if (legend) legend.hidden = !document.getElementById(checkboxId).checked;
     updateRoarCounts();
@@ -64,13 +65,25 @@ function roarEnabledVerdicts() {
     .filter(verdict => document.getElementById("roar-" + verdict)?.checked);
 }
 
+// Legend category of a rendered feature's properties; matches ROAR_CATEGORY.
+function roarCategory(props) {
+  const verdict = props["roar:verdict"];
+  const kind = props["roar:suggestion_kind"];
+  if (verdict === "alignment_verified" && kind) {
+    return kind === "directional" ? "alignment_directional" : "alignment_suggestion";
+  }
+  if (verdict === "suggestion_only" && kind === "directional") return "directional_suggestion";
+  return verdict;
+}
+
 function applyRoarFilter() {
   const enabled = roarEnabledVerdicts();
   const filter = enabled.length === ROAR_VERDICTS.length
     ? null
-    : ["in", ["get", "roar:verdict"], ["literal", enabled]];
+    : ["in", ROAR_CATEGORY, ["literal", enabled]];
   try {
     window.tigerMap.setFilter("roar", filter);
+    window.tigerMap.setFilter("roar-dash", filter ? ["all", ROAR_DASH_FILTER, filter] : ROAR_DASH_FILTER);
   } catch (e) {
     console.warn("Could not set filter on layer roar:", e);
   }
@@ -93,6 +106,13 @@ function setAllRoarVerdicts(checked) {
     document.getElementById("roar-" + v.verdict).checked = checked;
   }
   updateRoarVerdicts();
+}
+
+// Swatch fill: the colour, or alternating colour/dash stripes like the map line.
+function roarSwatchBackground(v) {
+  return v.dash
+    ? `repeating-linear-gradient(90deg, ${v.color} 0 .3rem, ${v.dash} .3rem .6rem)`
+    : v.color;
 }
 
 // Info bubble linking out from a legend row. A link inside the label opens
@@ -123,7 +143,7 @@ function initRoarLegend(map) {
     row.innerHTML =
       `<input class="form-check-input" type="checkbox" id="${id}">` +
       `<label class="form-check-label user-select-none d-flex align-items-center" for="${id}">` +
-      `<span class="roar-swatch" style="background:${v.color}"></span>` +
+      `<span class="roar-swatch" style="background:${roarSwatchBackground(v)}"></span>` +
       `<span class="flex-fill d-inline-flex align-items-center">${v.label}${roarInfoLink(v.info)}</span>` +
       `<span class="roar-count ms-3 text-body-secondary" id="roar-count-${v.verdict}"></span></label>`;
     list.appendChild(row);
@@ -145,6 +165,24 @@ function initRoarLegend(map) {
     .then(r => r.ok ? r.json() : null)
     .then(totals => { roarTotals = totals; updateRoarCounts(); })
     .catch(() => {});
+}
+
+// Per-category US totals, split like ROAR_CATEGORY, from the verdict x
+// suggestion-kind table in us-roar-counts.json. Without that table the split
+// rows have no total and the verdict rows show their whole verdict.
+function roarCategoryTotals(t) {
+  const out = { ...t.verdicts };
+  const vs = t.verdict_suggestions;
+  if (!vs) return out;
+  const sum = cells => Object.values(cells || {}).reduce((a, b) => a + b, 0);
+  const align = vs.alignment_verified || {};
+  const only = vs.suggestion_only || {};
+  out.alignment_verified = align.none || 0;
+  out.alignment_directional = align.directional || 0;
+  out.alignment_suggestion = sum(align) - out.alignment_verified - out.alignment_directional;
+  out.directional_suggestion = only.directional || 0;
+  out.suggestion_only = sum(only) - out.directional_suggestion;
+  return out;
 }
 
 let roarTotals = null; // { data_timestamp, total, verdicts: {verdict: n}, ... }
@@ -170,7 +208,8 @@ function updateRoarCounts() {
   if (map.getZoom() < ROAR_COUNT_MIN_ZOOM) {
     // Tiles are thinned here, so show the nationwide totals instead.
     if (roarTotals) {
-      for (const v of ROAR_VERDICTS) setCount(v.verdict, (roarTotals.verdicts[v.verdict] || 0).toLocaleString());
+      const totals = roarCategoryTotals(roarTotals);
+      for (const v of ROAR_VERDICTS) setCount(v.verdict, totals[v.verdict]?.toLocaleString() ?? "");
       const day = (roarTotals.data_timestamp || "").slice(0, 10);
       setNote(`US totals${day ? " as of " + day : ""}: ${roarTotals.total.toLocaleString()} roads. ` +
               "Zoom to 11+ for counts in view.");
@@ -192,8 +231,8 @@ function updateRoarCounts() {
     const id = f.properties["@id"];
     if (seen.has(id) || !inView(f.geometry)) continue;
     seen.add(id);
-    const verdict = f.properties["roar:verdict"];
-    counts[verdict] = (counts[verdict] || 0) + 1;
+    const category = roarCategory(f.properties);
+    counts[category] = (counts[category] || 0) + 1;
   }
   for (const v of ROAR_VERDICTS) setCount(v.verdict, (counts[v.verdict] || 0).toLocaleString());
   setNote(roarTotals

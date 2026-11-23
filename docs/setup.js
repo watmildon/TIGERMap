@@ -46,8 +46,10 @@ document.addEventListener("alpine:init", async () => {
         },
         NAD: {
           type: "vector",
-          url: "pmtiles://" + urlPrefix + "NAD.pmtiles",
-          attribution: "© Public Domain, USDOT",
+          // NAD+ (USDOT NAD plus local sources), published from the nad-endpoint
+          // repo. Always the hosted copy, also when serving locally.
+          url: "pmtiles://https://nad.watmildon.org/nad-current.pmtiles",
+          attribution: '<a href="https://github.com/watmildon/nad-endpoint">NAD+</a>: USDOT NAD and local public sources',
         },
         counties: {
           type: "vector",
@@ -85,7 +87,7 @@ document.addEventListener("alpine:init", async () => {
   MapUtils.addStandardControls(map);
 
   // Setup feature click handlers
-  MapUtils.setupFeatureHandlers(map, ['tigerReview', 'roar']);
+  MapUtils.setupFeatureHandlers(map, ['tigerReview', 'roar', 'NAD']);
 
   window.tigerMap = map;
 

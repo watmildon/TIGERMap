@@ -51,10 +51,14 @@ const MapUtils = {
         "features": []
       };
 
-      // Deduplicate features by @type and @id
+      // Deduplicate features by @type and @id. Features without an OSM id
+      // (e.g. NAD+ address points, several of which can share a spot) are
+      // only merged when every property matches.
       const features = {};
       for (const f of e.features) {
-        const key = f.properties['@type'] + f.properties['@id'];
+        const key = f.properties['@id'] !== undefined
+          ? f.properties['@type'] + f.properties['@id']
+          : JSON.stringify(f.properties);
         features[key] = f;
         newHighlightSource["features"].push({
           type: "Feature",
