@@ -6,6 +6,10 @@
 # Suggested crontab (extra attempts are ~free thanks to the no-op gate):
 #   TIGER_HEALTHCHECK_URL=https://hc-ping.com/<uuid>
 #   0 4,11,18 * * * bash /home/watmildon/TIGERProject/build-tiles.sh
+# The US extract comes from Geofabrik's internal server (full metadata) so the
+# weekly TIGER ROAR build (tigermap-roar-layer/build-roar-us.sh) can share it.
+# That needs an OSM login cookie, refreshed each run by the ROAR checkout's
+# scripts/geofabrik-cookie.sh from ~/.geofabrik-login.json.
 set -Eeuo pipefail
 shopt -s nullglob
 
@@ -103,34 +107,47 @@ log "preflight ok (${avail_gb}G free)"
 
 # --------------------------------------------------------- 2. refresh extracts
 step "STEP 2/8: download missing extracts"
-fetch() {   # $1 = url, $2 = file; a partial download must never pass the -s check
+ROAR_DIR=${ROAR_DIR:-$ROOT/../tigermap-roar-layer}
+COOKIE=${GEOFABRIK_COOKIE:-$HOME/.geofabrik-cookie.txt}
+bash "$ROAR_DIR/scripts/geofabrik-cookie.sh" "$COOKIE" || die "Geofabrik login cookie refresh failed (see $ROAR_DIR/docs/internal-extracts.md)"
+
+download() {   # $1 = url, $2 = file, $3 = cookie jar or empty; the old copy stays until the new one is complete
+  if [ -n "$3" ] && [ -s "$ROAR_DIR/scripts/fetch-ranged.sh" ]; then
+      # the internal server is slow per connection; 16 ranges bring 13 GB down in minutes
+      bash "$ROAR_DIR/scripts/fetch-ranged.sh" "$1" "$2" 16 "$3"
+  else
+      curl -fsSL --retry 3 --retry-delay 30 ${3:+-b "$3"} -o "$2.part" "$1" && mv -f "$2.part" "$2"
+  fi
+}
+fetch() {   # $1 = url, $2 = file, $3 = cookie jar (optional); a partial download must never pass the -s check
   [ -s "$2" ] || {
       log "no $2, downloading"
-      curl -fsSL --retry 3 --retry-delay 30 -o "$2.part" "$1" && mv "$2.part" "$2"
+      download "$1" "$2" "${3:-}"
   }
 }
 GF=https://download.geofabrik.de/north-america
-fetch $GF/us-latest.osm.pbf             us-latest.osm.pbf
+GFI=https://osm-internal.download.geofabrik.de/north-america   # still the pre-2026 layout
+fetch $GFI/us-latest-internal.osm.pbf   us-latest.osm.pbf "$COOKIE"
 fetch $GF/us/puerto-rico-latest.osm.pbf puerto-rico-latest.osm.pbf
 fetch $GF/us/washington-latest.osm.pbf  washington-latest.osm.pbf
 fetch $GF/us/utah-latest.osm.pbf        utah-latest.osm.pbf
 fetch $GF/us/wisconsin-latest.osm.pbf   wisconsin-latest.osm.pbf
 
 step "STEP 3/8: apply replication diffs"
-run_up_to_date() {   # $1 = file, $2 = replication server; prints the exit code
+run_up_to_date() {   # $1 = file, $2 = replication server, $3 = cookie jar or empty; prints the exit code
   local rc=0
-  pyosmium-up-to-date -v --server "$2" -s 10000 "$1" >&2 || rc=$?
+  pyosmium-up-to-date -v --server "$2" -s 10000 ${3:+--cookie "$3"} "$1" >&2 || rc=$?
   echo "$rc"
 }
-update_extract() {   # $1 = file, $2 = replication server, $3 = full extract url
+update_extract() {   # $1 = file, $2 = replication server, $3 = full extract url, $4 = cookie jar (optional)
   # pyosmium-up-to-date exit 1 means "applied diffs, more available upstream" —
   # a success that wants a re-run, not an error. Only >=2 is a failure.
   local rc
-  rc=$(run_up_to_date "$1" "$2")
+  rc=$(run_up_to_date "$1" "$2" "${4:-}")
   if [ "$rc" -ge 2 ]; then
       log "WARN: pyosmium-up-to-date failed for $1 (exit $rc); retrying in 60s"
       sleep 60
-      rc=$(run_up_to_date "$1" "$2")
+      rc=$(run_up_to_date "$1" "$2" "${4:-}")
   fi
   case "$rc" in
     0) ;;
@@ -139,18 +156,15 @@ update_extract() {   # $1 = file, $2 = replication server, $3 = full extract url
        # is fine and the diff chain itself is broken upstream (Geofabrik once
        # served an empty utah 000/004/936.state.txt, wedging every run for two
        # weeks). No amount of retrying fixes that; a fresh full extract does.
-       curl -fsS -m 60 --retry 3 "$2/state.txt" | grep '^sequenceNumber=[0-9]' >/dev/null \
+       curl -fsS -m 60 --retry 3 ${4:+-b "$4"} "$2/state.txt" | grep '^sequenceNumber=[0-9]' >/dev/null \
            || die "pyosmium-up-to-date failed for $1 (exit $rc) and $2 is unreachable"
        log "WARN: replication chain for $1 looks broken upstream (exit $rc); re-downloading full extract"
-       # the old copy stays in place until the new one is complete
-       curl -fsSL --retry 3 --retry-delay 30 -o "$1.part" "$3" \
-           || die "re-download of $1 failed"
-       mv -f "$1.part" "$1"
+       download "$3" "$1" "${4:-}" || die "re-download of $1 failed"
        log "re-downloaded $1 (sequence $(osmium fileinfo -g header.option.osmosis_replication_sequence_number "$1"))"
        ;;
   esac
 }
-update_extract us-latest.osm.pbf          $GF/us-updates                $GF/us-latest.osm.pbf
+update_extract us-latest.osm.pbf          $GFI/us-updates               $GFI/us-latest-internal.osm.pbf "$COOKIE"
 update_extract puerto-rico-latest.osm.pbf $GF/us/puerto-rico-updates    $GF/us/puerto-rico-latest.osm.pbf
 update_extract washington-latest.osm.pbf  $GF/us/washington-updates     $GF/us/washington-latest.osm.pbf
 update_extract utah-latest.osm.pbf        $GF/us/utah-updates           $GF/us/utah-latest.osm.pbf
