@@ -27,6 +27,42 @@ main {
 	vertical-align: -.125rem;
 }
 
+/* TIGER ROAR legend, top-left over the map (controls are top-right).
+   The id selector outranks Bootstrap's .card { position: relative },
+   which loads after this stylesheet. */
+#roarLegend.roar-legend {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	z-index: 2;
+	font-size: .85rem;
+	max-height: calc(100% - 20px);
+	overflow-y: auto;
+}
+
+.roar-legend .form-check {
+	margin-bottom: .1rem;
+}
+
+/* Legend row hovercards (main.js); the global .tooltip-inner rule would let
+   them run as wide as the page. */
+.roar-tooltip .tooltip-inner {
+	max-width: 18rem !important;
+	text-align: left;
+}
+
+.roar-legend .roar-note {
+	max-width: 16rem;
+}
+
+.roar-swatch {
+	display: inline-block;
+	width: 1.5rem;
+	height: .35rem;
+	border-radius: .2rem;
+	margin-right: .5rem;
+}
+
 .maplibregl-ctrl-attrib,
 .mapboxgl-ctrl-attrib {
 	color: #000;

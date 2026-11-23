@@ -54,6 +54,11 @@ document.addEventListener("alpine:init", async () => {
           url: "pmtiles://" + urlPrefix + "AllUSCounties.pmtiles",
           attribution: "© Public Domain, USDOT",
         },
+        roar: {
+          type: "vector",
+          url: "pmtiles://" + urlPrefix + "us-roar.pmtiles",
+          attribution: '© <a href="https://openstreetmap.org">OpenStreetMap</a>',
+        },
         highlight: {
           type: "geojson",
           data: MapUtils.createEmptyGeoJSON(),
@@ -80,12 +85,15 @@ document.addEventListener("alpine:init", async () => {
   MapUtils.addStandardControls(map);
 
   // Setup feature click handlers
-  MapUtils.setupFeatureHandlers(map, ['tigerReview']);
+  MapUtils.setupFeatureHandlers(map, ['tigerReview', 'roar']);
 
   window.tigerMap = map;
 
   // Initialize overlay checkboxes from URL
   initLayersFromURL(map);
+
+  // Build the TIGER ROAR legend (shown with the roar overlay)
+  initRoarLegend(map);
 
   // Restore "Last edited" choice and apply filters once the map loads
   initFiltersOnLoad(map);

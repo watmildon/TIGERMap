@@ -19,6 +19,7 @@ const OVERLAY_LAYERS = {
   countiesCheckbox: "counties",
   redlinedCheckbox: "redlined",
   eclipseCheckbox: "EclipseCenterline",
+  roarCheckbox: "roar",
 };
 
 function applyLayerVisibility(checkboxId, layerName) {
@@ -30,6 +31,11 @@ function applyLayerVisibility(checkboxId, layerName) {
   }
   if (layerName === "EclipseCenterline") {
     MapUtils.updateLayerVisibility(window.tigerMap, checkboxId, "penumbra");
+  }
+  if (layerName === "roar") {
+    const legend = document.getElementById("roarLegend");
+    if (legend) legend.hidden = !document.getElementById(checkboxId).checked;
+    updateRoarCounts();
   }
 }
 
@@ -48,6 +54,151 @@ function initLayersFromURL(map) {
       applyLayerVisibility(checkboxId, layerName);
     }
   });
+}
+
+// TIGER ROAR legend: one row per verdict (see ROAR_VERDICTS in mapstyle.js),
+// each toggling that verdict on the roar layer. The enabled set is kept in the
+// `roar` URL parameter whenever it is not every verdict.
+function roarEnabledVerdicts() {
+  return ROAR_VERDICTS.map(v => v.verdict)
+    .filter(verdict => document.getElementById("roar-" + verdict)?.checked);
+}
+
+function applyRoarFilter() {
+  const enabled = roarEnabledVerdicts();
+  const filter = enabled.length === ROAR_VERDICTS.length
+    ? null
+    : ["in", ["get", "roar:verdict"], ["literal", enabled]];
+  try {
+    window.tigerMap.setFilter("roar", filter);
+  } catch (e) {
+    console.warn("Could not set filter on layer roar:", e);
+  }
+}
+
+function updateRoarVerdicts() {
+  applyRoarFilter();
+  const enabled = roarEnabledVerdicts();
+  const url = new URL(window.location.href);
+  if (enabled.length === ROAR_VERDICTS.length) {
+    url.searchParams.delete("roar");
+  } else {
+    url.searchParams.set("roar", enabled.join(","));
+  }
+  window.history.replaceState({}, "", url.toString());
+}
+
+function setAllRoarVerdicts(checked) {
+  for (const v of ROAR_VERDICTS) {
+    document.getElementById("roar-" + v.verdict).checked = checked;
+  }
+  updateRoarVerdicts();
+}
+
+// Info bubble linking out from a legend row. A link inside the label opens
+// the page without toggling the checkbox.
+function roarInfoLink(info) {
+  if (!info) return "";
+  return `<a class="link-info ms-1 d-inline-flex align-items-center" href="${info.url}" target="_blank" rel="noopener" title="${info.title}">` +
+    `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">` +
+    `<path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14m0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16"/>` +
+    `<path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0"/>` +
+    `</svg></a>`;
+}
+
+// Build the legend rows, restore the enabled verdicts from the URL, and apply
+// the filter once the roar layer exists.
+function initRoarLegend(map) {
+  const list = document.getElementById("roarLegendList");
+  if (!list) return;
+  const param = new URLSearchParams(window.location.search).get("roar");
+  const wanted = param === null
+    ? null
+    : new Set(param.split(",").map(s => s.trim()).filter(Boolean));
+
+  for (const v of ROAR_VERDICTS) {
+    const id = "roar-" + v.verdict;
+    const row = document.createElement("div");
+    row.className = "form-check roar-legend-row";
+    row.innerHTML =
+      `<input class="form-check-input" type="checkbox" id="${id}">` +
+      `<label class="form-check-label user-select-none d-flex align-items-center" for="${id}">` +
+      `<span class="roar-swatch" style="background:${v.color}"></span>` +
+      `<span class="flex-fill d-inline-flex align-items-center">${v.label}${roarInfoLink(v.info)}</span>` +
+      `<span class="roar-count ms-3 text-body-secondary" id="roar-count-${v.verdict}"></span></label>`;
+    list.appendChild(row);
+    const box = row.querySelector("input");
+    box.checked = wanted === null || wanted.has(v.verdict);
+    box.addEventListener("change", updateRoarVerdicts);
+    // Hovercard with what the verdict means
+    new bootstrap.Tooltip(row, {
+      title: v.description,
+      placement: "right",
+      customClass: "roar-tooltip",
+    });
+  }
+  map.on("load", applyRoarFilter);
+  map.on("idle", updateRoarCounts);
+
+  // Nationwide totals, written by the ROAR pipeline next to the tileset.
+  fetch(MapUtils.getUrlPrefix() + "us-roar-counts.json")
+    .then(r => r.ok ? r.json() : null)
+    .then(totals => { roarTotals = totals; updateRoarCounts(); })
+    .catch(() => {});
+}
+
+let roarTotals = null; // { data_timestamp, total, verdicts: {verdict: n}, ... }
+
+// Roads in view per verdict. Only at the tileset's max zoom and closer: below
+// it tippecanoe has dropped features, so a count would be wrong. Features come
+// from the loaded tiles, which can extend past the viewport, and a road split
+// across tiles appears once per tile, so clip to the view and dedupe by id.
+const ROAR_COUNT_MIN_ZOOM = 11;
+
+function updateRoarCounts() {
+  const legend = document.getElementById("roarLegend");
+  if (!legend || legend.hidden) return;
+  const map = window.tigerMap;
+  const note = document.getElementById("roarLegendNote");
+  const setCount = (verdict, text) => {
+    const el = document.getElementById("roar-count-" + verdict);
+    if (el) el.textContent = text;
+  };
+
+  const setNote = (text) => { if (note) note.textContent = text; };
+
+  if (map.getZoom() < ROAR_COUNT_MIN_ZOOM) {
+    // Tiles are thinned here, so show the nationwide totals instead.
+    if (roarTotals) {
+      for (const v of ROAR_VERDICTS) setCount(v.verdict, (roarTotals.verdicts[v.verdict] || 0).toLocaleString());
+      const day = (roarTotals.data_timestamp || "").slice(0, 10);
+      setNote(`US totals${day ? " as of " + day : ""}: ${roarTotals.total.toLocaleString()} roads. ` +
+              "Zoom to 11+ for counts in view.");
+    } else {
+      for (const v of ROAR_VERDICTS) setCount(v.verdict, "");
+      setNote("Counts in view at zoom 11+");
+    }
+    return;
+  }
+
+  const bounds = map.getBounds();
+  const inView = (geometry) => {
+    const lines = geometry.type === "MultiLineString" ? geometry.coordinates : [geometry.coordinates];
+    return lines.some(line => line.some(([lng, lat]) => bounds.contains([lng, lat])));
+  };
+  const counts = {};
+  const seen = new Set();
+  for (const f of map.querySourceFeatures("roar", { sourceLayer: "roar" })) {
+    const id = f.properties["@id"];
+    if (seen.has(id) || !inView(f.geometry)) continue;
+    seen.add(id);
+    const verdict = f.properties["roar:verdict"];
+    counts[verdict] = (counts[verdict] || 0) + 1;
+  }
+  for (const v of ROAR_VERDICTS) setCount(v.verdict, (counts[v.verdict] || 0).toLocaleString());
+  setNote(roarTotals
+    ? `In view. US total ${roarTotals.total.toLocaleString()} roads.`
+    : "In view");
 }
 
 // TIGER layers the "Last edited" filter applies to. The text filter applies
